@@ -1,3 +1,4 @@
+.env
 // Puerto por el cual vamos a trabajar la salida de nuestra aplicacion
 PORT = 3000
 
