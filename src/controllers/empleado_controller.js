@@ -1,18 +1,26 @@
 import Employee from "../models/empleados.js";
+import Negocio from "../models/negocios.js"
 import {sendMailToNewEmployee, sendMailToRecoveryPasswordEmployee} from "../config/nodemailer.js";
 
+
 const registerEmployee = async (req, res) => {
-    const {email,password} = req.body;
+    const {email,password, companyCode} = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todos los campos"});
     const verificarEmailBDD = await Employee.findOne({email})
     if (verificarEmailBDD)
         return res.status(400).json({msg:"Lo sentimos, el email ya se encuentra registrado"});
+    const verificarCodeBDD = await Negocio.findOne({companyCode});
+    if (!verificarCodeBDD)
+        return res.status(400).json({msg:"Lo sentimos, el codigo del negocio no existe"});
     const newEmployee = new Employee(req.body);
     newEmployee.password = await newEmployee.encrypPassword(password);
+    newEmployee.companyName = verificarCodeBDD._id;
     const token =  await newEmployee.createToken();
     await sendMailToNewEmployee(email, token);
     await newEmployee.save();
+    verificarCodeBDD.empleados.push(newEmployee._id);
+    await verificarCodeBDD.save();
     res.status(200).json({msg: "Revisa tu correo electrónico para confirmar tu cuenta"});
 }
 
