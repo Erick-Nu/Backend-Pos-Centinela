@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (userMail, token) => {
+const sendMailToRegisterNegocio = (userMail, companyName, companyCode) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -33,7 +33,7 @@ const sendMailToRegister = (userMail, token) => {
 
             <!-- Imagen animada -->
             <div style="text-align: center; padding: 20px;">
-                <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG9ubGx1cTIweTd0ZTNuMnlxaDVka2I5Nnd4eXhueGhodTRseHpuciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TiRaHUdJnNA38z0H7G/giphy.gif" 
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2c3NDZ4MGcwMXQ5dDc3bTlreTFwcWV1MzFlbzg4ZnJ0YTg5cXF2ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wzJ67MJMk6UMM/giphy.gif" 
                     alt="Cámara de seguridad animada" 
                     style="width: 180px; height: auto; border-radius: 8px;" />
             </div>
@@ -45,7 +45,11 @@ const sendMailToRegister = (userMail, token) => {
                 <p style="font-size: 16px; color: #4a5568;">Hola,</p>
 
                 <p style="font-size: 16px; color: #4a5568; text-align: justify;">
-                    Gracias por registrarte en <strong>POS CENTINELA</strong>, la plataforma de monitoreo inteligente que optimiza la productividad de tu equipo mediante Inteligencia Artificial.
+                    Has sido registrado como empleado en <strong>${companyName}</strong>. Para comenzar, debes completar tu registro configurando tu contraseña.
+                </p>
+
+                <p style="font-size: 16px; color: #4a5568; text-align: justify;">
+                    Este es tu código de empleado: <strong>${companyCode}</strong>
                 </p>
 
                 <p style="font-size: 16px; color: #4a5568;">
@@ -53,7 +57,7 @@ const sendMailToRegister = (userMail, token) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}admins/confirm/${token}"  
+                    <a href="${process.env.URL_BACKEND}employees/register"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
@@ -79,3 +83,7 @@ const sendMailToRegister = (userMail, token) => {
         }
     })
 }
+
+export {
+    sendMailToRegisterNegocio
+};

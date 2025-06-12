@@ -407,5 +407,4 @@ export {
     sendMailToRecoveryPasswordEmployee,
     sendMailToNewBoss,
     sendMailToRecoveryPasswordBoss
-
-}
+};
