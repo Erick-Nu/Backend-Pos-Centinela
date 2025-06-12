@@ -14,6 +14,12 @@ const empleadoSchema = new Schema({
         required: true,
         trim: true
     },
+    cedula: {
+        type: String,
+        require: true,
+        trim: true,
+        unique: true
+    },
     email: {
         type: String,
         require: true,
@@ -39,6 +45,16 @@ const empleadoSchema = new Schema({
     rol: {
         type: String,
         default: "empleado"
+    },
+    companyName:{
+        type: String,
+        default: null,
+        trim: true
+    },
+    companyCode:{
+        type: String,
+        default: null,
+        trim: true
     }
 }, {
     timestamps: true

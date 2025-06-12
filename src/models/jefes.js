@@ -12,6 +12,12 @@ const jefeSchema = new Schema({
         required: true,
         trim: true
     },
+    cedula: {
+        type: String,
+        require: true,
+        trim: true,
+        unique: true
+    },
     email: {
         type: String,
         require: true,
@@ -37,6 +43,18 @@ const jefeSchema = new Schema({
     rol: {
         type: String,
         default: "jefe"
+    },
+    companyName:{
+        type: String,
+        default: null
+    },
+    companyCode:{
+        type: String,
+        default: null
+    },
+    plan:{
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
@@ -49,7 +67,7 @@ jefeSchema.methods.encrypPassword = async function(password) {
     return passwordEncryp;
 };
 
-// 2. Método para verificar si el password ingresado es     el mismo de la BDD
+// 2. Método para verificar si el password ingresado es el mismo de la BDD
 jefeSchema.methods.matchPassword =  async function (password) {
     const response = await bcrypt.compare(password, this.password);
     return response;
@@ -60,5 +78,6 @@ jefeSchema.methods.createToken = async function () {
     const tokenGenerado = this.token = Math.random().toString(36).slice(2);
     return tokenGenerado;
 }
+
 
 export default model('Jefes', jefeSchema);
