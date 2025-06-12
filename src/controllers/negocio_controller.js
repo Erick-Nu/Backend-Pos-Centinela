@@ -32,7 +32,7 @@ const createNegocio = async (req, res) => {
             emailContacto,
             emailBoss: jefeDBB._id
         });
-    newNegocio.companyCode = await newNegocio.createCode({companyName});
+    newNegocio.companyCode = await newNegocio.createCode(companyName);
     await newNegocio.save();
     res.status(200).json({msg:"Tu negocio a sido registrado correctamente"})
 }
