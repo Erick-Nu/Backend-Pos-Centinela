@@ -5,7 +5,8 @@ import {
     updateFace,
     recuperarPassword,
     comprobarTokenPasword,
-    crearNuevoPassword
+    crearNuevoPassword,
+    loginAdmin
 } from '../controllers/admin_controller.js';
 
 const router = Router();
@@ -16,5 +17,6 @@ router.put('/admins/update', updateFace);
 router.post('/admins/password/recover', recuperarPassword);
 router.get('/admins/password/verify/:token', comprobarTokenPasword);
 router.post('/admins/password/reset/:token', crearNuevoPassword);
+router.post('/admins/login', loginAdmin);
 
 export default router;
