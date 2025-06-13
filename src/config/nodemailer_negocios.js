@@ -17,7 +17,7 @@ const sendMailToRegisterNegocio = (userMail, companyName, companyCode) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
-        subject: "POS CENTINELA EC - Confirmación de Registro",
+        subject: "POS CENTINELA EC - Confirmación de Registro Empleado",
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
@@ -48,9 +48,14 @@ const sendMailToRegisterNegocio = (userMail, companyName, companyCode) => {
                     Has sido registrado como empleado en <strong>${companyName}</strong>. Para comenzar, debes completar tu registro configurando tu contraseña.
                 </p>
 
-                <p style="font-size: 16px; color: #4a5568; text-align: justify;">
-                    Este es tu código de empleado: <strong>${companyCode}</strong>
-                </p>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="font-size: 16px; color: #4a5568;">
+                        El codigo del negocio es:
+                    </p>
+                    <div style="font-size: 24px; font-weight: bold; color: #16a085; letter-spacing: 2px; background-color: #f0fdfa; display: inline-block; padding: 10px 20px; border-radius: 10px;">
+                        ${companyCode}
+                    </div>
+                </div>
 
                 <p style="font-size: 16px; color: #4a5568;">
                     Para activar tu cuenta, por favor haz clic en el siguiente botón:
