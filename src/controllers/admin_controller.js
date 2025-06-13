@@ -37,7 +37,7 @@ const recuperarPassword = async(req,res)=>{
     if(!administradorBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
     const token = administradorBDD.crearToken();
     administradorBDD.token = token;
-    const adminCode = administradorBDD.adminCode;
+    const adminCode = await Administrador.findOne({email}).select("adminCode");
     await sendMailToRecoveryPassword(email, token, adminCode);
     await administradorBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
