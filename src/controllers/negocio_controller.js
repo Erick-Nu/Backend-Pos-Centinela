@@ -3,28 +3,35 @@ import Boss from "../models/jefes.js";
 import { sendMailToRegisterNegocio } from "../config/nodemailer_negocios.js";
 
 const createNegocio = async (req, res) => {
-    const {emailBoss, companyName, ruc} = req.body;
+    const { emailBoss, companyName, ruc } = req.body;
     if (Object.values(req.body).includes(""))
-        return res.status(400).json({msg:"Lo sentimos, debes de llenar todo los datos"});
-    const jefeDBB = await Boss.findOne({email: emailBoss});
-    const planDBB = jefeDBB.plan;
+        return res.status(400).json({ msg: "Lo sentimos, debes de llenar todos los datos" });
+    const jefeDBB = await Boss.findOne({ email: emailBoss });
+    const planDBB = jefeDBB?.plan;
     if (!planDBB)
-        return res.status(401).json({msg:"Lo sentimos, aquiere un plan para registrar tu negocio y puedas utilizar todos nuestros servicios"});
-    const newNegocio = new Negocios(
-        {
-            ...req.body,
-            emailBoss: jefeDBB._id
-        });
+        return res.status(401).json({ msg: "Lo sentimos, adquiere un plan para registrar tu negocio y puedas utilizar todos nuestros servicios" });
+    const newNegocio = new Negocios({
+        ...req.body,
+        emailBoss: jefeDBB._id
+    });
     const verifyRuc = await newNegocio.verifyRuc(ruc);
     if (!verifyRuc)
-        return res.status(400).json({msg:"Lo sentimos, el RUC debe de tener 13 digitos exactos"});
-    newNegocio.companyCode = await newNegocio.createCode(companyName);
-    jefeDBB.companyCode = newNegocio.companyCode;
+        return res.status(400).json({ msg: "Lo sentimos, el RUC debe tener exactamente 13 dígitos numéricos" });
+    let baseCode = await newNegocio.createCode(companyName);
+    let finalCode = baseCode;
+    let contador = 1;
+    while (await Negocios.findOne({ companyCode: finalCode })) {
+        finalCode = `${baseCode}${contador}`;
+        contador++;
+    }
+    newNegocio.companyCode = finalCode;
+    jefeDBB.companyCode = finalCode;
     jefeDBB.companyName = newNegocio._id;
     await newNegocio.save();
     await jefeDBB.save();
-    res.status(200).json({msg:"Tu negocio a sido registrado correctamente"});
+    res.status(200).json({ msg: "Tu negocio ha sido registrado correctamente" });
 };
+
 
 const addEmployee = async (req, res) => {
     const {email, companyName, companyCode} = req.body;
