@@ -7,9 +7,6 @@ const createNegocio = async (req, res) => {
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todo los datos"});
     const jefeDBB = await Boss.findOne({email: emailBoss});
-    const verifyRuc = await verifyRuc(ruc);
-    if (!verifyRuc)
-        return res.status(400).json({msg:"Lo sentimos, el RUC debe de tener 13 digitos exactos"})
     const planDBB = jefeDBB.plan;
     if (!planDBB)
         return res.status(401).json({msg:"Lo sentimos, aquiere un plan para registrar tu negocio y puedas utilizar todos nuestros servicios"});
@@ -18,6 +15,9 @@ const createNegocio = async (req, res) => {
             ...req.body,
             emailBoss: jefeDBB._id
         });
+    const verifyRuc = await newNegocio.verifyRuc(ruc);
+    if (!verifyRuc)
+        return res.status(400).json({msg:"Lo sentimos, el RUC debe de tener 13 digitos exactos"});
     newNegocio.companyCode = await newNegocio.createCode(companyName);
     jefeDBB.companyCode = newNegocio.companyCode;
     jefeDBB.companyName = newNegocio._id;
