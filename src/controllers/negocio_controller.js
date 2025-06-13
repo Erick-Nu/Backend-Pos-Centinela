@@ -7,6 +7,9 @@ const createNegocio = async (req, res) => {
     if (Object.values(req.body).includes(""))
         return res.status(400).json({ msg: "Lo sentimos, debes de llenar todos los datos" });
     const jefeDBB = await Boss.findOne({ email: emailBoss });
+    const negocioNum = jefeDBB?.companyName;
+    if (negocioNum)
+        return res.status(400).json({ msg: "Lo sentimos, ya tienes registrado un negocio" });
     const planDBB = jefeDBB?.plan;
     if (!planDBB)
         return res.status(401).json({ msg: "Lo sentimos, adquiere un plan para registrar tu negocio y puedas utilizar todos nuestros servicios" });
