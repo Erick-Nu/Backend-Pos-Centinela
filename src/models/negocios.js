@@ -37,7 +37,7 @@ const negocioSchema = new Schema({
         required: true,
         trim: true
     },
-    emailContacto: {
+    emailNegocio: {
         type: String,
         required: true,
         trim: true
@@ -67,5 +67,9 @@ negocioSchema.methods.createCode = async function (companyName) {
     this.companyCode = code;
     return code;
 }
+
+negocioSchema.methods.verifyRuc = async function (ruc) {
+    return /^\d{13}$/.test(ruc);
+};
 
 export default model('Negocios', negocioSchema);

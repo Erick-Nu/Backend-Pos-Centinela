@@ -13,6 +13,12 @@ const administradorSchema = new Schema({
         required:true,
         trim:true
     },
+    cedula: {
+        type: String,
+        require: true,
+        trim: true,
+        unique: true
+    },
     email:{
         type:String,
         require:true,
@@ -22,6 +28,11 @@ const administradorSchema = new Schema({
     password:{
         type:String,
         require:true
+    },
+    adminCode:{
+        type:String,
+        unique: true,
+        trim:true
     },
     status:{
         type:Boolean,
@@ -39,7 +50,6 @@ const administradorSchema = new Schema({
         type:String,
         default:"administrador"
     }
-
 },{
     timestamps:true
 })
@@ -63,6 +73,16 @@ administradorSchema.methods.crearToken = function(){
     return tokenGenerado
 }
 
+// Método para crear el codigo del administrador para su ingreso
+administradorSchema.methods.createCode = async function(nombres, apellidos, cedula) {
+    const fullName = `${nombres} ${apellidos}`;
+    const initials = fullName.split(' ').map(word => word[0]?.toUpperCase() || '').join('');
+    const cedulaDigits = cedula.slice(-4);
+    const month = new Date().getMonth() + 1;
+    const code = `${initials}${month}${cedulaDigits}`;
+    this.companyCode = code;
+    return code;
+};
 
 
 export default model('Administradores',administradorSchema)

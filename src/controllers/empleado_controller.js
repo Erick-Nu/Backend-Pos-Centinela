@@ -2,7 +2,6 @@ import Employee from "../models/empleados.js";
 import Negocio from "../models/negocios.js"
 import {sendMailToNewEmployee, sendMailToRecoveryPasswordEmployee} from "../config/nodemailer.js";
 
-
 const registerEmployee = async (req, res) => {
     const {email,password, companyCode} = req.body;
     if (Object.values(req.body).includes(""))

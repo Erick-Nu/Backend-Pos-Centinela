@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (userMail, token) => {
+const sendMailToRegister = (userMail, token, adminCode) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -21,7 +21,7 @@ const sendMailToRegister = (userMail, token) => {
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
-            <!-- Encabezado con nombre de empresa -->
+            <!-- Encabezado -->
             <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
                 <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
                     POS CENTINELA
@@ -34,23 +34,29 @@ const sendMailToRegister = (userMail, token) => {
             <!-- Imagen animada -->
             <div style="text-align: center; padding: 20px;">
                 <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG9ubGx1cTIweTd0ZTNuMnlxaDVka2I5Nnd4eXhueGhodTRseHpuciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TiRaHUdJnNA38z0H7G/giphy.gif" 
-                    alt="Cámara de seguridad animada" 
+                    alt="Administrador animado" 
                     style="width: 180px; height: auto; border-radius: 8px;" />
             </div>
 
             <!-- Contenido principal -->
             <div style="padding: 0 30px 30px 30px;">
-                <h2 style="color: #1a202c; text-align: center; font-size: 22px;">Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span></h2>
-
-                <p style="font-size: 16px; color: #4a5568;">Hola,</p>
+                <h2 style="color: #1a202c; text-align: center; font-size: 22px;">¡Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span>!</h2>
 
                 <p style="font-size: 16px; color: #4a5568; text-align: justify;">
-                    Gracias por registrarte en <strong>POS CENTINELA</strong>, la plataforma de monitoreo inteligente que optimiza la productividad de tu equipo mediante Inteligencia Artificial.
+                    ¡Nos alegra mucho darte la bienvenida como nuevo <strong>Administrador</strong> en <strong>POS CENTINELA</strong>! Estamos encantados de contar contigo en este gran proyecto de monitoreo inteligente impulsado por Inteligencia Artificial.
                 </p>
 
                 <p style="font-size: 16px; color: #4a5568;">
-                    Para activar tu cuenta, por favor haz clic en el siguiente botón:
+                    Para completar tu registro y activar tu cuenta, solo falta un paso:
                 </p>
+
+                <p style="font-size: 16px; color: #4a5568; text-align: center;">
+                    Tu <strong>código de administrador</strong> es:
+                </p>
+
+                <div style="text-align: center; margin-top: 10px; font-size: 18px; font-weight: bold; color: #2d3748;">
+                    ${adminCode}
+                </div>
 
                 <div style="text-align: center; margin: 30px 0;">
                     <a href="${process.env.URL_BACKEND}admins/confirm/${token}"  
@@ -59,15 +65,18 @@ const sendMailToRegister = (userMail, token) => {
                     </a>
                 </div>
 
-                <p style="font-size: 14px; color: #718096; text-align: center;">Si no creaste esta cuenta, puedes ignorar este mensaje.</p>
+                <p style="font-size: 14px; color: #718096; text-align: center; margin-top: 20px;">
+                    Si no solicitaste unirte a POS CENTINELA, puedes ignorar este mensaje.
+                </p>
             </div>
 
             <!-- Footer -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
-                🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
+                🤖 El equipo de <strong>POS CENTINELA</strong> está feliz de tenerte con nosotros.<br>
                 <em>Monitorea. Aprende. Mejora.</em>
             </div>
         </div>
+
         `
     }   
 

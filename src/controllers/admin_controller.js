@@ -15,9 +15,10 @@ const registroAdmin = async (req,res)=>{
     // Encriptación de la contraseña
     nuevoAdmin.password = await nuevoAdmin.encrypPassword(password)
     const token = await nuevoAdmin.crearToken()
-    await sendMailToRegister(email,token)
+    const adminCode = await nuevoAdmin.createCode(nuevoAdmin.nombres, nuevoAdmin.apellidos, nuevoAdmin.cedula)
+    await sendMailToRegister(email,token,adminCode)
     await nuevoAdmin.save()
-    res.status(200).json({msg:"Revisa tu correo electrónico para confirmar tu cuenta"})
+    res.status(200).json({msg:"Administrador registrado correctamente, revisa tu correo electrónico para confirmar tu cuenta"})
 }
 
 const confirmarMail = async (req,res)=>{
