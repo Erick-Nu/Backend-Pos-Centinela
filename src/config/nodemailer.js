@@ -156,15 +156,14 @@ const sendMailToRecoveryPassword = async(userMail, token, adminCode) => {
 
 // Verificacion de un nuevo Empleado correo personalizado
 
-const sendMailToNewEmployee = (userMail, token) => {
+const sendMailToNewEmployee = (userMail, token, companyName) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
-        subject: "POS CENTINELA EC - ¡Bienvenido a nuestro equipo! 👷‍♂️",
+        subject: "POS CENTINELA EC - ¡Bienvenido a nuestro equipo! ",
         html: `
-                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
-            <!-- Encabezado con nombre de empresa -->
             <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
                 <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
                     POS CENTINELA
@@ -174,25 +173,23 @@ const sendMailToNewEmployee = (userMail, token) => {
                 </p>
             </div>
 
-            <!-- Imagen animada -->
             <div style="text-align: center; padding: 20px;">
                 <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG9xMXhycGowdGFkbXlkdjI4Z2Z5MXYxNHVmc2c2ODh5cnk4bXNxNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7E8tiGcPf1G78dMXRf/giphy.gif" 
                     alt="Cámara de seguridad animada" 
                     style="width: 180px; height: auto; border-radius: 8px;" />
             </div>
 
-            <!-- Contenido principal -->
             <div style="padding: 0 30px 30px 30px;">
-                <h2 style="color: #1a202c; text-align: center; font-size: 22px;">Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span></h2>
+                <h2 style="color: #1a202c; text-align: center; font-size: 22px;">¡Felicidades! </h2>
 
                 <p style="font-size: 16px; color: #4a5568;">Hola,</p>
 
                 <p style="font-size: 16px; color: #4a5568; text-align: justify;">
-                    Gracias por unirte al equipo de POS CENTINELA, la plataforma que utiliza Inteligencia Artificial para mejorar la productividad.
+                    Has sido añadido exitosamente al equipo. ¡Estamos muy contentos de tenerte a bordo!
                 </p>
 
                 <p style="font-size: 16px; color: #4a5568;">
-                    Para activar tu cuenta y comenzar a formar parte de nuestro equipo, haz clic en el botón a continuación:
+                    Para activar tu cuenta y comenzar a trabajar con nosotros, haz clic en el botón a continuación:
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
@@ -205,12 +202,12 @@ const sendMailToNewEmployee = (userMail, token) => {
                 <p style="font-size: 14px; color: #718096; text-align: center;">Si no solicitaste este correo, puedes ignorarlo.</p>
             </div>
 
-            <!-- Footer -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
-                🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
+                🤖 El equipo de <strong>POS CENTINELA</strong> te acompaña en esta nueva etapa.<br>
                 <em>Monitorea. Aprende. Mejora.</em>
             </div>
         </div>
+
         `
     }
 
