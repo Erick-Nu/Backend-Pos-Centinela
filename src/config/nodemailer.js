@@ -288,11 +288,10 @@ const sendMailToNewBoss = (userMail, token) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
-        subject: "POS CENTINELA EC - ¡Bienvenido a nuestro equipo! 👷‍♂️",
+        subject: "POS CENTINELA EC - ¡Bienvenido a nuestra plataforma! ",
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
-            <!-- Encabezado con nombre de empresa -->
             <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
                 <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
                     POS CENTINELA
@@ -302,14 +301,12 @@ const sendMailToNewBoss = (userMail, token) => {
                 </p>
             </div>
 
-            <!-- Imagen animada -->
             <div style="text-align: center; padding: 20px;">
                 <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3c4dzNkaXpzYnhqbmpyN2F0bXBpenF4ZXB1Mmc3Zno3bW5jMm54YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/UShetzBnSmKNE3tc4L/giphy.gif" 
                     alt="Cámara de seguridad animada" 
                     style="width: 180px; height: auto; border-radius: 8px;" />
             </div>
 
-            <!-- Contenido principal -->
             <div style="padding: 0 30px 30px 30px;">
                 <h2 style="color: #1a202c; text-align: center; font-size: 22px;">Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span></h2>
 
@@ -320,7 +317,7 @@ const sendMailToNewBoss = (userMail, token) => {
                 </p>
 
                 <p style="font-size: 16px; color: #4a5568;">
-                    Para activar tu cuenta y comenzar a formar parte de nuestro equipo, haz clic en el botón a continuación:
+                    Para activar tu cuenta y comenzar a utilizar nuestro sistemas, haz clic en el siguiente botón:
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
@@ -333,7 +330,6 @@ const sendMailToNewBoss = (userMail, token) => {
                 <p style="font-size: 14px; color: #718096; text-align: center;">Si no solicitaste este correo, puedes ignorarlo.</p>
             </div>
 
-            <!-- Footer -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
                 🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
                 <em>Monitorea. Aprende. Mejora.</em>
@@ -359,7 +355,6 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
-            <!-- Encabezado con nombre de empresa -->
             <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
                 <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
                     POS CENTINELA
@@ -369,14 +364,12 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
                 </p>
             </div>
 
-            <!-- Imagen animada -->
             <div style="text-align: center; padding: 20px;">
                 <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWp4aDVraHF1Nzd6ZzRlMmkxeHdtdGt2M2preGl4Z3Z1a2ZlNDAzayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7aTskHEUdgCQAXde/giphy.gif" 
                     alt="Cámara de seguridad animada" 
                     style="width: 300px; height: auto; border-radius: 8px;" />
             </div>
 
-            <!-- Contenido principal -->
             <div style="padding: 0 30px 30px 30px;">
                 <h2 style="color: #1a202c; text-align: center; font-size: 22px;">🔐 ¡Ups! ¿Olvidaste tu contraseña?</h2>
 
@@ -398,7 +391,6 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
                 <p style="font-size: 14px; color: #718096; text-align: center;">Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
             </div>
 
-            <!-- Footer -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
                 🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
                 <em>Monitorea. Aprende. Mejora.</em>
