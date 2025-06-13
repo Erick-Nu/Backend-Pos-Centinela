@@ -56,7 +56,7 @@ const createNewPassword = async (req,res)=>{
     bossBDD.password = await bossBDD.encrypPassword(password);
     await bossBDD.save();
     res.status(200).json({msg:"Felicitaciones, ya puedes iniciar sesión con tu nuevo password"});
-}
+};
 
 const loginBoss = async(req,res)=>{
     const {email,password} = req.body;

@@ -17,5 +17,6 @@ router.get('/employees/confirm/:token', confirmEmail);
 router.post('/employees/password/recover', recuperarPassword);
 router.get('/employees/password/verify/:token', comprobarTokenPasword);
 router.post('/employees/password/reset/:token', createNewPassword);
+router.post('/employees/login', loginEmployee);
 
 export default router;

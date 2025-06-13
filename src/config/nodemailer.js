@@ -258,10 +258,6 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) 
                     </div>
                 </div>
 
-                <p style="font-size: 16px; color: #4a5568;">
-                    Para restablecer tu contraseña, haz clic en el siguiente botón:
-                </p>
-
                 <div style="text-align: center; margin: 30px 0;">
                     <a href="${process.env.URL_BACKEND} employees/password/verify/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
