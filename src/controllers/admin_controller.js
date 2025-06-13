@@ -64,6 +64,27 @@ const crearNuevoPassword = async (req,res)=>{
     res.status(200).json({msg:"Felicitaciones, ya puedes iniciar sesión con tu nuevo password"}) 
 }
 
+const loginAdmin = async(req,res)=>{
+    const {email,password,adminCode} = req.body;
+    if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"});
+    const administradorBDD = await Administrador.findOne({email}).select("-status -__v -token -updatedAt -createdAt -confirmEmail");
+    if(administradorBDD?.confirmEmail===false) return res.status(403).json({msg:"Lo sentimos, debe verificar su cuenta"});
+    if(!administradorBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
+    const verificarPassword = await administradorBDD.matchPassword(password);
+    if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, el password no es el correcto"});
+    const verificarCode = await Administrador.findOne({adminCode: adminCode});
+    if(!verificarCode) return res.status(401).json({msg:"Lo sentimos, tu codigo de administrador no es correcto"});
+    const {nombres,apellidos,cedula,_id,rol} = administradorBDD;
+    res.status(200).json({
+        nombres,
+        apellidos,
+        cedula,
+        adminCode:administradorBDD.adminCode,
+        email:administradorBDD.email,
+        rol, 
+        _id
+    })
+};
 
 // Metodos Personalizadas para el administrador [Actualizar Perfil]
 const updateFace = async (req, res) => {
@@ -92,5 +113,6 @@ export {
     updateFace,
     recuperarPassword,
     comprobarTokenPasword,
-    crearNuevoPassword
+    crearNuevoPassword,
+    loginAdmin
 }
