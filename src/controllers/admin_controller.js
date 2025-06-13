@@ -15,6 +15,7 @@ const registroAdmin = async (req,res)=>{
     nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);
     const token = await nuevoAdmin.crearToken();
     const adminCode = await nuevoAdmin.createCode(nuevoAdmin.nombres, nuevoAdmin.apellidos, nuevoAdmin.cedula);
+    nuevoAdmin.adminCode = adminCode;
     await sendMailToRegister(email,token,adminCode);
     await nuevoAdmin.save();
     res.status(200).json({msg:"Administrador registrado correctamente, revisa tu correo electrónico para confirmar tu cuenta"});
@@ -37,7 +38,7 @@ const recuperarPassword = async(req,res)=>{
     if(!administradorBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
     const token = administradorBDD.crearToken();
     administradorBDD.token = token;
-    const adminCode = await Administrador.findOne({email}).select("adminCode");
+    const adminCode = administradorBDD.adminCode;
     await sendMailToRecoveryPassword(email, token, adminCode);
     await administradorBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
