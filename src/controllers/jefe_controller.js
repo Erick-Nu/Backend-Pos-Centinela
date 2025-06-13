@@ -29,20 +29,20 @@ const confirmEmail = async (req,res)=>{
 const recoverPassword = async(req,res)=>{
     const {email} = req.body;
     if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"});
-    const BossBDD = await Boss.findOne({email});
-    if(!BossBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
-    const token = await BossBDD.createToken();
-    BossBDD.token=token;
+    const bossBDD = await Boss.findOne({email});
+    if(!bossBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
+    const token = await bossBDD.createToken();
+    bossBDD.token=token;
     await sendMailToRecoveryPasswordBoss(email,token);
-    await BossBDD.save();
+    await bossBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
 }
 
 const comprobarTokenPasword = async (req,res)=>{
     const token = req.params.token;
-    const BossBDD = await Boss.findOne({token});
-    if(BossBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"});
-    await BossBDD.save();
+    const bossBDD = await Boss.findOne({token});
+    if(bossBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"});
+    await bossBDD.save();
     res.status(200).json({msg:"Token confirmado, ya puedes crear tu nuevo password"});
 }
 
@@ -50,28 +50,28 @@ const createNewPassword = async (req,res)=>{
     const{password,confirmpassword} = req.body;
     if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"});
     if(password != confirmpassword) return res.status(404).json({msg:"Lo sentimos, los passwords no coinciden"});
-    const BossBDD = await Boss.findOne({token:req.params.token});
-    if(BossBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"});
-    BossBDD.token = null;
-    BossBDD.password = await BossBDD.encrypPassword(password);
-    await BossBDD.save();
+    const bossBDD = await Boss.findOne({token:req.params.token});
+    if(bossBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"});
+    bossBDD.token = null;
+    bossBDD.password = await bossBDD.encrypPassword(password);
+    await bossBDD.save();
     res.status(200).json({msg:"Felicitaciones, ya puedes iniciar sesión con tu nuevo password"});
 }
 
 const loginBoss = async(req,res)=>{
     const {email,password} = req.body;
     if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"});
-    const adminBDD = await Admin.findOne({email}).select("-status -__v -token -updatedAt -createdAt -confirmEmail");
-    if(adminBDD?.confirmEmail===false) return res.status(403).json({msg:"Lo sentimos, debe verificar su cuenta"});
-    if(!adminBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
-    const verificarPassword = await adminBDD.matchPassword(password);
+    const bossBDD = await Boss.findOne({email}).select("-status -__v -token -updatedAt -createdAt -confirmEmail");
+    if(bossBDD?.confirmEmail===false) return res.status(403).json({msg:"Lo sentimos, debe verificar su cuenta"});
+    if(!bossBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
+    const verificarPassword = await bossBDD.matchPassword(password);
     if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, el password no es el correcto"});
-    const {nombres,apellidos,cedula,_id,rol,plan, companyName, companyCode} = adminBDD;
+    const {nombres,apellidos,cedula,_id,rol,plan, companyName, companyCode} = bossBDD;
     res.status(200).json({
         nombres,
         apellidos,
         cedula,
-        email:adminBDD.email,
+        email:bossBDD.email,
         companyName,
         companyCode,
         plan,
