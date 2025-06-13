@@ -4,7 +4,8 @@ import {
     confirmEmail,
     recuperarPassword,
     comprobarTokenPasword,
-    createNewPassword
+    createNewPassword,
+    loginEmployee
 } from '../controllers/empleado_controller.js';
 
 const router = Router();
