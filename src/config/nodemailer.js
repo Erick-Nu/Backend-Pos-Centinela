@@ -156,7 +156,7 @@ const sendMailToRecoveryPassword = async(userMail, token, adminCode) => {
 
 // Verificacion de un nuevo Empleado correo personalizado
 
-const sendMailToNewEmployee = (userMail, token, companyName) => {
+const sendMailToNewEmployee = (userMail, token) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -220,7 +220,7 @@ const sendMailToNewEmployee = (userMail, token, companyName) => {
     })
 }
 
-const sendMailToRecoveryPasswordEmployee = async (userMail, token) => {
+const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
         to: userMail,
@@ -228,7 +228,6 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token) => {
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
-            <!-- Encabezado con nombre de empresa -->
             <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
                 <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
                     POS CENTINELA
@@ -238,20 +237,26 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token) => {
                 </p>
             </div>
 
-            <!-- Imagen animada -->
             <div style="text-align: center; padding: 20px;">
                 <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHRkMHRyd2xraWVvNTB1amZzN3hqZTFvamI4eWY5Z29jNWh6dHpmOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/woWQA2I7xqRMI/giphy.gif" 
                     alt="Cámara de seguridad animada" 
                     style="width: 180px; height: auto; border-radius: 8px;" />
             </div>
 
-            <!-- Contenido principal -->
             <div style="padding: 0 30px 30px 30px;">
                 <h2 style="color: #1a202c; text-align: center; font-size: 22px;">🔐 ¡Ups! ¿Olvidaste tu contraseña?</h2>
 
                 <p style="font-size: 16px; color: #4a5568; text-align: justify;">
                     No te preocupes, en <strong>POS CENTINELA</strong> te cubrimos las espaldas. Sabemos que a veces pueden ocurrir olvidos o situaciones inesperadas, por eso hemos creado un proceso rápido y seguro para que recuperes el acceso a tu cuenta sin complicaciones. 
                 </p>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="font-size: 16px; color: #4a5568;">
+                        Codigo del negocio:
+                    </p>
+                    <div style="font-size: 24px; font-weight: bold; color: #16a085; letter-spacing: 2px; background-color: #f0fdfa; display: inline-block; padding: 10px 20px; border-radius: 10px;">
+                        ${companyCode}
+                    </div>
+                </div>
 
                 <p style="font-size: 16px; color: #4a5568;">
                     Para restablecer tu contraseña, haz clic en el siguiente botón:
@@ -267,7 +272,6 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token) => {
                 <p style="font-size: 14px; color: #718096; text-align: center;">Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
             </div>
 
-            <!-- Footer -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
                 🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
                 <em>Monitorea. Aprende. Mejora.</em>

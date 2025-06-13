@@ -43,7 +43,8 @@ const recuperarPassword = async(req, res) => {
         return res.status(404).json({msg:"Lo sentimos, el usuario mo se encuentra registrado"});
     const token = await employeeBDD.createToken();
     employeeBDD.token = token;
-    await sendMailToRecoveryPasswordEmployee(email, token);
+    const negocioCode = employeeBDD.adminCode;
+    await sendMailToRecoveryPasswordEmployee(email, token, negocioCode);
     await employeeBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
 }
