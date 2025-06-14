@@ -71,7 +71,7 @@ const loginAdmin = async(req,res)=>{
     const administradorBDD = await Administrador.findOne({ email }).select("-__v -token -updatedAt -createdAt -confirmEmail");
     if (!administradorBDD)
         return res.status(404).json({ msg: "Lo sentimos, el usuario no se encuentra registrado" });
-    if (administradorBDD.status === false)
+    if (administradorBDD.confirmEmail === false)
         return res.status(403).json({ msg: "Lo sentimos, debe verificar su cuenta" });
     const verificarPassword = await administradorBDD.matchPassword(password);
     if (!verificarPassword)
