@@ -68,7 +68,7 @@ const loginAdmin = async(req,res)=>{
     const {email, password, adminCode} = req.body;
     if (Object.values(req.body).includes("")) 
         return res.status(404).json({ msg: "Lo sentimos, debes llenar todos los campos" });
-    const administradorBDD = await Administrador.findOne({ email }).select("-__v -token -updatedAt -createdAt -confirmEmail");
+    const administradorBDD = await Administrador.findOne({ email }).select("-__v -token -updatedAt -createdAt");
     if (!administradorBDD)
         return res.status(404).json({ msg: "Lo sentimos, el usuario no se encuentra registrado" });
     if (administradorBDD.confirmEmail === false)
