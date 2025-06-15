@@ -6,9 +6,12 @@ const registerEmployee = async (req, res) => {
     const {email,password, companyCode} = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todos los campos"});
-    const verificarEmailBDD = await Employee.findOne({email})
+    const verificarEmailBDD = await Employee.findOne({email});
     if (verificarEmailBDD)
         return res.status(400).json({msg:"Lo sentimos, el email ya se encuentra registrado"});
+    const verificarCedulaBDD = await Employee.findOne({cedula});
+        if (verificarCedulaBDD)
+        return res.status(400).json({msg:"Lo sentimos, la cédula ya se encuentra registrada"});
     const verificarCodeBDD = await Negocio.findOne({companyCode});
     if (!verificarCodeBDD)
         return res.status(400).json({msg:"Lo sentimos, el codigo del negocio no existe"});
