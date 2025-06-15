@@ -3,7 +3,7 @@ import Negocio from "../models/negocios.js"
 import {sendMailToNewEmployee, sendMailToRecoveryPasswordEmployee} from "../config/nodemailer.js";
 
 const registerEmployee = async (req, res) => {
-    const {email,password, companyCode} = req.body;
+    const {email,password,companyCode, cedula} = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todos los campos"});
     const verificarEmailBDD = await Employee.findOne({email});
