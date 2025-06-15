@@ -40,7 +40,7 @@ const addEmployee = async (req, res) => {
     const {email, companyName, companyCode} = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todo los datos"});
-    await sendMailToRegisterNegocio(email, companyName, companyCode, rol="Empleado");
+    await sendMailToRegisterNegocio(email, companyName, companyCode, "Empleado");
     res.status(200).json({msg:"Tu empleado fue añadido al negocio correctamente"});
 };
 
