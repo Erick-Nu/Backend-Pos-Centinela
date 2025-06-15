@@ -80,8 +80,6 @@ const loginBoss = async(req,res)=>{
     });
 };
 
-import Boss from "../models/jefes.js";
-
 const pagarPlan = async (req, res) => {
     try {
         const { email } = req.body;
