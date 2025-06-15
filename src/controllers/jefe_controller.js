@@ -14,7 +14,8 @@ const registerBoss = async (req,res)=>{
     const nuevoBoss = new Boss(req.body);
     nuevoBoss.password = await nuevoBoss.encrypPassword(password);
     const token = await nuevoBoss.createToken();
-    await sendMailToNewBoss(email,token, rol="jefe");
+    const rol = nuevoBoss.rol;
+    await sendMailToNewBoss(email,token, rol);
     await nuevoBoss.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para confirmar tu cuenta"});
 }
