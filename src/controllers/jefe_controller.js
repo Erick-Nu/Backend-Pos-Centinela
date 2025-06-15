@@ -37,8 +37,7 @@ const recoverPassword = async(req,res)=>{
     if(!bossBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
     const token = await bossBDD.createToken();
     bossBDD.token=token;
-    const rol = bossBDD.rol;
-    await sendMailToRecoveryPasswordBoss(email,token,rol);
+    await sendMailToRecoveryPasswordBoss(email,token);
     await bossBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
 }

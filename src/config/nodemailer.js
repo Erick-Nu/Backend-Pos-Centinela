@@ -220,7 +220,7 @@ const sendMailToNewEmployee = (userMail, token, rol) => {
     })
 }
 
-const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode, rol) => {
+const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
         to: userMail,
@@ -259,7 +259,7 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode, 
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/reset-password/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
@@ -344,7 +344,7 @@ const sendMailToNewBoss = (userMail, token, rol) => {
     })
 }
 
-const sendMailToRecoveryPasswordBoss = async (userMail, token, rol) => {
+const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
         to: userMail,
@@ -379,7 +379,7 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token, rol) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/reset-password/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>

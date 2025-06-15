@@ -48,8 +48,7 @@ const recuperarPassword = async(req, res) => {
     const token = await employeeBDD.createToken();
     employeeBDD.token = token;
     const negocioCode = employeeBDD.companyCode;
-    const rol = employeeBDD.rol;
-    await sendMailToRecoveryPasswordEmployee(email, token, negocioCode, rol);
+    await sendMailToRecoveryPasswordEmployee(email, token, negocioCode);
     await employeeBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
 }
