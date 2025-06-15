@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (userMail, token, adminCode, rol) => {
+const sendMailToRegister = (userMail, token, adminCode) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -57,7 +57,7 @@ const sendMailToRegister = (userMail, token, adminCode, rol) => {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}l/${token}"  
+                    <a href="${process.env.URL_FRONTEND}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
@@ -132,7 +132,7 @@ const sendMailToRecoveryPassword = async(userMail, token, adminCode) => {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}admins/password/verify/${token}"  
+                    <a href="${process.env.URL_FRONTEND}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
@@ -193,7 +193,7 @@ const sendMailToNewEmployee = (userMail, token, rol) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}"  
+                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}l/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
@@ -318,7 +318,7 @@ const sendMailToNewBoss = (userMail, token, rol) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}boss/confirm/${rol}/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
