@@ -68,6 +68,7 @@ const createNewPassword = async (req, res) => {
     if (password != confirmpassword)
         return res.status(400).json({msg:"Lo sentimos, los password no coinciden"});
     const employeeBDD = await Employee.findOne({token:req.params.token});
+    if(employeeBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"});
     employeeBDD.token = null;
     employeeBDD.password = await employeeBDD.encrypPassword(password);
     await employeeBDD.save()
