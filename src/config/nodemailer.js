@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (userMail, token, adminCode) => {
+const sendMailToRegister = (userMail, token, adminCode, rol) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -57,7 +57,7 @@ const sendMailToRegister = (userMail, token, adminCode) => {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}admins/confirm/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}l/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
@@ -156,7 +156,7 @@ const sendMailToRecoveryPassword = async(userMail, token, adminCode) => {
 
 // Verificacion de un nuevo Empleado correo personalizado
 
-const sendMailToNewEmployee = (userMail, token) => {
+const sendMailToNewEmployee = (userMail, token, rol) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -193,7 +193,7 @@ const sendMailToNewEmployee = (userMail, token) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}employees/confirm/${token}"  
+                    <a href="${process.env.URL_FRONTEND}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>

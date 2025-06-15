@@ -16,7 +16,8 @@ const registroAdmin = async (req,res)=>{
     const token = await nuevoAdmin.crearToken();
     const adminCode = await nuevoAdmin.createCode(nuevoAdmin.nombres, nuevoAdmin.apellidos, nuevoAdmin.cedula);
     nuevoAdmin.adminCode = adminCode;
-    await sendMailToRegister(email,token,adminCode);
+    const rol = nuevoAdmin.rol;
+    await sendMailToRegister(email,token,adminCode,rol);
     await nuevoAdmin.save();
     res.status(200).json({msg:"Administrador registrado correctamente, revisa tu correo electrónico para confirmar tu cuenta"});
 }
@@ -39,7 +40,8 @@ const recuperarPassword = async(req,res)=>{
     const token = administradorBDD.crearToken();
     administradorBDD.token = token;
     const adminCode = administradorBDD.adminCode;
-    await sendMailToRecoveryPassword(email, token, adminCode);
+    const rol = administradorBDD.rol;
+    await sendMailToRecoveryPassword(email, token, adminCode, rol);
     await administradorBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
 }

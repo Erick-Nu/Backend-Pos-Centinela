@@ -16,7 +16,8 @@ const registerEmployee = async (req, res) => {
     newEmployee.password = await newEmployee.encrypPassword(password);
     newEmployee.companyName = verificarCodeBDD._id;
     const token =  await newEmployee.createToken();
-    await sendMailToNewEmployee(email, token);
+    const rol = newEmployee.rol;
+    await sendMailToNewEmployee(email, token, rol);
     await newEmployee.save();
     verificarCodeBDD.empleados.push(newEmployee._id);
     await verificarCodeBDD.save();
@@ -44,7 +45,8 @@ const recuperarPassword = async(req, res) => {
     const token = await employeeBDD.createToken();
     employeeBDD.token = token;
     const negocioCode = employeeBDD.companyCode;
-    await sendMailToRecoveryPasswordEmployee(email, token, negocioCode);
+    const rol = employeeBDD.rol;
+    await sendMailToRecoveryPasswordEmployee(email, token, negocioCode, rol);
     await employeeBDD.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"});
 }
