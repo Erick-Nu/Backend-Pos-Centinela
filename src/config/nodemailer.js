@@ -259,7 +259,7 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) 
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND} employees/password/verify/${token}"  
+                    <a href="${process.env.URL_BACKEND}employees/password/verify/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
@@ -281,7 +281,7 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) 
 
 // Verificacion de un nuevo Jefe correo personalizado
 
-const sendMailToNewBoss = (userMail, token) => {
+const sendMailToNewBoss = (userMail, token, rol) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -318,7 +318,7 @@ const sendMailToNewBoss = (userMail, token) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}boss/confirm/${token}"  
+                    <a href="${process.env.URL_BACKEND}boss/confirm/${token}/${rol}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
