@@ -87,7 +87,7 @@ const pagarPlan = async (req, res) => {
         if (!jefe) return res.status(404).json({ msg: "Jefe no encontrado" });
         jefe.plan = true;
         await jefe.save();
-        res.status(200).json({ msg: "El plan activado exitosamente" });
+        res.status(200).json({ msg: "El plan fue activado exitosamente" });
     } catch (error) {
         res.status(500).json({ msg: "Error al activar el plan" });
     }
