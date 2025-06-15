@@ -2,12 +2,15 @@ import Boss from "../models/jefes.js"
 import { sendMailToNewBoss, sendMailToRecoveryPasswordBoss } from "../config/nodemailer.js"
 
 const registerBoss = async (req,res)=>{
-    const {email,password} = req.body
+    const {email,password,cedula} = req.body
     if (Object.values(req.body).includes("")) 
         return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"});
     const verificarEmailBDD = await Boss.findOne({email});
     if(verificarEmailBDD) 
         return res.status(400).json({msg:"Lo sentimos, el email ya se encuentra registrado"});
+    const verificarCedulaBDD = await Boss.findOne({cedula});
+    if (verificarCedulaBDD)
+        return res.status(400).json({msg:"Lo sentimos, la cédula ya se encuentra registrada"});
     const nuevoBoss = new Boss(req.body);
     nuevoBoss.password = await nuevoBoss.encrypPassword(password);
     const token = await nuevoBoss.createToken();
