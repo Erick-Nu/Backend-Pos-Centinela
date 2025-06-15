@@ -220,7 +220,7 @@ const sendMailToNewEmployee = (userMail, token, rol) => {
     })
 }
 
-const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) => {
+const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode, rol) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
         to: userMail,
