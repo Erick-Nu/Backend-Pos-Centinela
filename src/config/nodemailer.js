@@ -193,7 +193,7 @@ const sendMailToNewEmployee = (userMail, token, rol) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}l/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
@@ -259,7 +259,7 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) 
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}employees/password/verify/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
@@ -379,7 +379,7 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token, rol) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/forgot-password"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
