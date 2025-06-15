@@ -80,11 +80,27 @@ const loginBoss = async(req,res)=>{
     });
 };
 
+import Boss from "../models/jefes.js";
+
+const pagarPlan = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const jefe = await Boss.findOne({ email });
+        if (!jefe) return res.status(404).json({ msg: "Jefe no encontrado" });
+        jefe.plan = true;
+        await jefe.save();
+        res.status(200).json({ msg: "El plan activado exitosamente" });
+    } catch (error) {
+        res.status(500).json({ msg: "Error al activar el plan" });
+    }
+};
+
 export {
     registerBoss,
     confirmEmail,
     recoverPassword,
     comprobarTokenPasword,
     createNewPassword,
-    loginBoss
+    loginBoss,
+    pagarPlan
 };
