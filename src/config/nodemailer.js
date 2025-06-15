@@ -344,7 +344,7 @@ const sendMailToNewBoss = (userMail, token, rol) => {
     })
 }
 
-const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
+const sendMailToRecoveryPasswordBoss = async (userMail, token, rol) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
         to: userMail,
@@ -379,7 +379,7 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_BACKEND}boss/password/verify/${token}"  
+                    <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
