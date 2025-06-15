@@ -17,7 +17,7 @@ const registroAdmin = async (req,res)=>{
     const adminCode = await nuevoAdmin.createCode(nuevoAdmin.nombres, nuevoAdmin.apellidos, nuevoAdmin.cedula);
     nuevoAdmin.adminCode = adminCode;
     const rol = nuevoAdmin.rol;
-    await sendMailToRegister(email,token,adminCode,rol);
+    await sendMailToRegister(email,token,adminCode,rol,password);
     await nuevoAdmin.save();
     res.status(200).json({msg:"Administrador registrado correctamente, revisa tu correo electrónico para confirmar tu cuenta"});
 }

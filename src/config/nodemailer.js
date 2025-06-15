@@ -13,67 +13,80 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (userMail, token, adminCode) => {
+const sendMailToRegister = (userMail, token, adminCode, password,  email, rol) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
         subject: "POS CENTINELA EC - Confirmación de Registro",
         html: `
-        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 16px; border: 1px solid #e0e0e0; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); overflow: hidden;">
 
+            <!-- Encabezado -->
             <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
-                <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
-                    POS CENTINELA
-                </h1>
-                <p style="margin: 6px 0 0; color: #e0f7f4; font-size: 14px; font-style: italic;">
-                    Monitorea. Aprende. Mejora.
-                </p>
+                <h1 style="margin: 0; font-size: 30px; color: #ffffff; letter-spacing: 1px;">POS CENTINELA</h1>
+                <p style="margin-top: 8px; color: #d0f4f0; font-size: 15px; font-style: italic;">Monitorea. Aprende. Mejora.</p>
             </div>
 
-            <div style="text-align: center; padding: 20px;">
+            <!-- Imagen -->
+            <div style="text-align: center; padding: 24px;">
                 <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG9ubGx1cTIweTd0ZTNuMnlxaDVka2I5Nnd4eXhueGhodTRseHpuciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TiRaHUdJnNA38z0H7G/giphy.gif" 
                     alt="Administrador animado" 
-                    style="width: 180px; height: auto; border-radius: 8px;" />
+                    style="width: 180px; max-width: 100%; border-radius: 10px;" />
             </div>
 
-            <div style="padding: 0 30px 30px 30px;">
+            <!-- Cuerpo -->
+            <div style="padding: 0 32px 32px 32px;">
                 <h2 style="color: #1a202c; text-align: center; font-size: 22px;">¡Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span>!</h2>
 
-                <p style="font-size: 16px; color: #4a5568; text-align: justify;">
-                    ¡Nos alegra mucho darte la bienvenida como nuevo <strong>Administrador</strong> en <strong>POS CENTINELA</strong>! Estamos encantados de contar contigo en este gran proyecto de monitoreo inteligente impulsado por Inteligencia Artificial.
+                <p style="font-size: 16px; color: #4a5568; text-align: justify; line-height: 1.6;">
+                Nos complace darte la bienvenida como nuevo <strong>Administrador</strong> de <strong>POS CENTINELA</strong>. Eres parte fundamental de este sistema inteligente de monitoreo con tecnología de <em>Inteligencia Artificial</em>.
                 </p>
 
-                <p style="font-size: 16px; color: #4a5568;">
-                    Para completar tu registro y activar tu cuenta, solo falta un paso:
+                <p style="font-size: 16px; color: #4a5568; line-height: 1.6;">
+                Para completar tu registro y activar tu cuenta, aquí están tus credenciales:
                 </p>
 
-                <div style="text-align: center; margin-top: 20px;">
-                    <p style="font-size: 16px; color: #4a5568;">
-                        Tu código de administrador es:
-                    </p>
-                    <div style="font-size: 24px; font-weight: bold; color: #16a085; letter-spacing: 2px; background-color: #f0fdfa; display: inline-block; padding: 10px 20px; border-radius: 10px;">
-                        ${adminCode}
-                    </div>
+                <!-- Usuario y Contraseña compactos y alineados -->
+                <div style="text-align: center; margin-top: 24px;">
+                <div style="display: inline-block; background-color: #f0fdfa; padding: 12px 20px; border-radius: 10px; margin: 8px; min-width: 140px;">
+                    <p style="margin: 0 0 4px; font-size: 14px; color: #4a5568;">Usuario</p>
+                    <div style="font-size: 18px; font-weight: bold; color: #16a085;">${email}</div>
                 </div>
 
-                <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}"  
-                        style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
-                        Confirmar mi cuenta
-                    </a>
+                <div style="display: inline-block; background-color: #f0fdfa; padding: 12px 20px; border-radius: 10px; margin: 8px; min-width: 140px;">
+                    <p style="margin: 0 0 4px; font-size: 14px; color: #4a5568;">Contraseña</p>
+                    <div style="font-size: 18px; font-weight: bold; color: #16a085;">${password}</div>
+                </div>
                 </div>
 
+                <!-- Código de Administrador -->
+                <div style="text-align: center; margin-top: 30px;">
+                <p style="font-size: 16px; color: #4a5568;">Tu código de administrador es:</p>
+                <div style="display: inline-block; font-size: 18px; font-weight: bold; color: #16a085; background-color: #f0fdfa; padding: 12px 24px; border-radius: 10px;">
+                    ${adminCode}
+                </div>
+                </div>
+
+                <!-- Botón -->
+                <div style="text-align: center; margin: 32px 0;">
+                <a href="${process.env.URL_FRONTEND}/confirm/${rol}/${token}"  
+                    style="background-color: #1abc9c; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
+                    Confirmar mi cuenta
+                </a>
+                </div>
+
+                <!-- Nota final -->
                 <p style="font-size: 14px; color: #718096; text-align: center; margin-top: 20px;">
-                    Si no solicitaste unirte a POS CENTINELA, puedes ignorar este mensaje.
+                Si no solicitaste unirte a POS CENTINELA, puedes ignorar este mensaje sin problemas.
                 </p>
             </div>
 
+            <!-- Pie -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
                 🤖 El equipo de <strong>POS CENTINELA</strong> está feliz de tenerte con nosotros.<br>
                 <em>Monitorea. Aprende. Mejora.</em>
             </div>
-        </div>
-
+            </div>
         `
     }   
 
@@ -132,7 +145,7 @@ const sendMailToRecoveryPassword = async(userMail, token, adminCode) => {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}"  
+                    <a href="${process.env.URL_FRONTEND}/reset-password/${token}"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Restablecer contraseña
                     </a>
