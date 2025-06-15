@@ -81,16 +81,13 @@ const loginBoss = async(req,res)=>{
 };
 
 const pagarPlan = async (req, res) => {
-    try {
-        const { email } = req.body;
-        const jefe = await Boss.findOne({ email });
-        if (!jefe) return res.status(404).json({ msg: "Jefe no encontrado" });
-        jefe.plan = true;
-        await jefe.save();
-        res.status(200).json({ msg: "El plan fue activado exitosamente" });
-    } catch (error) {
-        res.status(500).json({ msg: "Error al activar el plan" });
-    }
+    const { email } = req.body;
+    const jefe = await Boss.findOne({ email });
+    if (!jefe) return res.status(404).json({ msg: "Jefe no encontrado" });
+    if (jefe.plan) return res.status(400).json({ msg: "El plan ya fue activado" });
+    jefe.plan = true;
+    await jefe.save();
+    res.status(200).json({ msg: "El plan fue activado exitosamente" });
 };
 
 export {
