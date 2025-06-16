@@ -76,23 +76,21 @@ const createNewPassword = async (req, res) => {
 }
 
 const loginEmployee = async(req,res)=>{
-    const {email,password,companyCode} = req.body;
+    const {email,password} = req.body;
     if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"});
     const employeeBDD = await Employee.findOne({email}).select("-status -__v -token -updatedAt -createdAt");
     if(employeeBDD?.confirmEmail===false) return res.status(403).json({msg:"Lo sentimos, debe verificar su cuenta"});
     if(!employeeBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
     const verificarPassword = await employeeBDD.matchPassword(password);
     if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, el password no es el correcto"});
-    const verificarCode = await Employee.findOne({companyCode: companyCode});
-    if(!verificarCode) return res.status(401).json({msg:"Lo sentimos, el código del negocio no es correcto"});
-    const {nombres,apellidos,cedula,_id,rol, companyName} = employeeBDD;
+    const {nombres,apellidos,cedula,_id,rol, companyName, companyCode} = employeeBDD;
     res.status(200).json({
         nombres,
         apellidos,
         cedula,
         email:employeeBDD.email,
         companyName,
-        companyCode:employeeBDD.companyCode,
+        companyCode,
         rol,
         _id,
     });
