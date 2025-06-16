@@ -62,7 +62,7 @@ const sendMailToRegisterNegocio = (userMail, companyName, companyCode, rol) => {
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.URL_FRONTEND}/auth/register"  
+                    <a href="${process.env.URL_FRONTEND}/register"  
                         style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
                         Confirmar mi cuenta
                     </a>
