@@ -55,7 +55,7 @@ const jefeSchema = new Schema({
     },
     plan:{
         type: Boolean,
-        default: false
+        default: true
     }
 }, {
     timestamps: true
