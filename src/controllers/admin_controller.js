@@ -56,9 +56,9 @@ const comprobarTokenPasword = async (req,res)=>{
 }
 
 const crearNuevoPassword = async (req,res)=>{
-    const{password,confirmpassword} = req.body
+    const{password,confirmPassword} = req.body
     if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"})
-    if(password != confirmpassword) return res.status(404).json({msg:"Lo sentimos, los passwords no coinciden"})
+    if(password != confirmPassword) return res.status(404).json({msg:"Lo sentimos, los passwords no coinciden"})
     const administradorBDD = await Administrador.findOne({token:req.params.token})
     if(administradorBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"})
     administradorBDD.token = null
