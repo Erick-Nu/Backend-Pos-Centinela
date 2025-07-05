@@ -18,8 +18,8 @@ const registroAdmin = async (req,res)=>{
     nuevoAdmin.adminCode = adminCode;
     const rol = nuevoAdmin.rol;
     await sendMailToRegister(email, password, token, rol, adminCode);
-    await nuevoAdmin.save();
     nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);  
+    await nuevoAdmin.save();
     res.status(200).json({msg:"Administrador registrado correctamente"});
 }
 

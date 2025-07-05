@@ -99,10 +99,10 @@ const sendMailToRegister = (email, password, token, rol, adminCode) => {
     })
 }
 
-const sendMailToRecoveryPassword = async(userMail, token, adminCode) => {
+const sendMailToRecoveryPassword = async(email, token, adminCode) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
-        to: userMail,
+        to: email,
         subject: "POS CENTINELA EC - Recupera tu contraseña",
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
