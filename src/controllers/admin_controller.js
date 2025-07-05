@@ -2,7 +2,7 @@ import Administrador from "../models/administradores.js"
 import { sendMailToRegister, sendMailToRecoveryPassword } from "../config/nodemailer.js"
 
 const registroAdmin = async (req,res)=>{
-    const {email,password,cedula} = req.body
+    const {nombres,apellidos,email,cedula} = req.body
     if (Object.values(req.body).includes("")) 
         return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"});
     const verificarEmailBDD = await Administrador.findOne({email})
@@ -12,14 +12,15 @@ const registroAdmin = async (req,res)=>{
     if(verificarCedulaBDD) 
         return res.status(400).json({msg:"Lo sentimos, la cédula ya se encuentra registrada"});
     const nuevoAdmin = new Administrador(req.body);
-    nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);
     const token = await nuevoAdmin.crearToken();
-    const adminCode = await nuevoAdmin.createCode(nuevoAdmin.nombres, nuevoAdmin.apellidos, nuevoAdmin.cedula);
+    const adminCode = await nuevoAdmin.createCode(nombres, apellidos, cedula);
+    const password = await nuevoAdmin.createTemporaryPassword(nombres, apellidos, cedula);
     nuevoAdmin.adminCode = adminCode;
     const rol = nuevoAdmin.rol;
     await sendMailToRegister(email,token,adminCode,rol,password);
+    nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);
     await nuevoAdmin.save();
-    res.status(200).json({msg:"Administrador registrado correctamente, revisa tu correo electrónico para confirmar tu cuenta"});
+    res.status(200).json({msg:"Administrador registrado correctamente"});
 }
 
 const confirmarMail = async (req,res)=>{
