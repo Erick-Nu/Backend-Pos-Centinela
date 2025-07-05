@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (email, token, adminCode, rol, password) => {
+const sendMailToRegister = (email, password, token, rol, adminCode) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: email,

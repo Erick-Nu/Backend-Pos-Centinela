@@ -17,7 +17,7 @@ const registroAdmin = async (req,res)=>{
     const adminCode = await nuevoAdmin.createCode(nombres, apellidos, cedula);
     nuevoAdmin.adminCode = adminCode;
     const rol = nuevoAdmin.rol;
-    await sendMailToRegister(email,token,adminCode,rol,password);
+    await sendMailToRegister(email, password, token, rol, adminCode);
     await nuevoAdmin.save();
     nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);  
     res.status(200).json({msg:"Administrador registrado correctamente"});
