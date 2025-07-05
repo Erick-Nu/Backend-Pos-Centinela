@@ -12,13 +12,13 @@ const registroAdmin = async (req,res)=>{
     if(verificarCedulaBDD) 
         return res.status(400).json({msg:"Lo sentimos, la cédula ya se encuentra registrada"});
     const nuevoAdmin = new Administrador(req.body);
+    const password = await nuevoAdmin.createTemporaryPassword(nombres, apellidos, cedula);
+    nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);   
     const token = await nuevoAdmin.crearToken();
     const adminCode = await nuevoAdmin.createCode(nombres, apellidos, cedula);
-    const password = await nuevoAdmin.createTemporaryPassword(nombres, apellidos, cedula);
     nuevoAdmin.adminCode = adminCode;
     const rol = nuevoAdmin.rol;
     await sendMailToRegister(email,token,adminCode,rol,password);
-    nuevoAdmin.password = await nuevoAdmin.encrypPassword(password);
     await nuevoAdmin.save();
     res.status(200).json({msg:"Administrador registrado correctamente"});
 }
