@@ -85,13 +85,12 @@ administradorSchema.methods.createCode = async function(nombres, apellidos, cedu
 };
 
 // Método para crear una contraseña temporal
-administradorSchema.methods.createTemporaryPassword = async function(nombres, apellidos, cedula){
-    const fullName = `${nombres} ${apellidos}`;
-    const initials = fullName.split(' ').map(word => word[0]?.toUpperCase() || '').join('');
-    const cedulaDigits = cedula.slice(-4);
-    const month = new Date().getMonth() + 1;
-    const temporaryPassword = `${initials}${month}${cedulaDigits}`;
-    this.password = await this.encrypPassword(temporaryPassword);
+administradorSchema.methods.createTemporaryPassword = async function(nombres, cedula) {
+    const primerNombre = nombres.split(' ')[0].toLowerCase();
+    const ultimosDigitos = cedula.slice(-3);
+    const caracteresEspeciales = ['*', '.', '#', '@', '-', '_'];
+    const randomChar = caracteresEspeciales[Math.floor(Math.random() * caracteresEspeciales.length)];
+    const temporaryPassword = `${primerNombre}${ultimosDigitos}${randomChar}`;
     return temporaryPassword;
 };
 
