@@ -46,8 +46,7 @@ const jefeSchema = new Schema({
     },
     companyName:{
         type: Schema.Types.ObjectId,
-        ref: 'negocios',
-        required: null
+        ref: 'negocios'
     },
     companyCode:{
         type: String,

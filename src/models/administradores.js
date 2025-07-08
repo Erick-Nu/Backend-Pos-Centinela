@@ -49,6 +49,10 @@ const administradorSchema = new Schema({
     rol:{
         type:String,
         default:"administrador"
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 },{
     timestamps:true
