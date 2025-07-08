@@ -25,10 +25,53 @@ app.use(express.json())
 // Variables globales
 
 
-// Rutas 
-app.get('/',(req,res)=>{
-    res.send("Server on")
-})
+// Ruta principal y de las cuales se derivan las demás
+// Ruta principal mejorada con HTML y CSS
+app.get('/', (req, res) => {
+    res.send(`
+    <html>
+        <head>
+        <title>🚀 API POS CENTINELA</title>
+        <style>
+            body {
+            background-color: #0f172a;
+            color: #facc15;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            }
+            h1 {
+            font-size: 3rem;
+            margin: 0;
+            }
+            p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: #94a3b8;
+            }
+            .emoji {
+            font-size: 4rem;
+            animation: spin 2s infinite linear;
+            }
+            @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+            }
+        </style>
+        </head>
+        <body>
+        <div class="emoji">🛒</div>
+        <h1>POS CENTINELA API</h1>
+        <p>🚀 Server Running Successfully 🚀</p>
+        </body>
+    </html>
+    `);
+});
+
 
 // Rutas para administradores
 app.use('/api',routerAdministradores)
