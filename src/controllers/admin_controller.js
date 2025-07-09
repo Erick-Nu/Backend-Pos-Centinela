@@ -152,7 +152,7 @@ const updatePerfil = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-    const {_id: id} = req.administradorBDD.toObject();
+    const id = req.administradorBDD._id;
     const {password, confirmPassword, adminCode} = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});
@@ -169,6 +169,7 @@ const updatePassword = async (req, res) => {
     await administradorBDD.save();
     res.status(200).json({msg:"Password actualizado correctamente"});
 };
+
 
 const listAdmins = async (req, res) => {
     const administradores = await Administrador.find().select("-password -createdAt -updatedAt -__v");
