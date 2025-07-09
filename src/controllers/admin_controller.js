@@ -170,7 +170,6 @@ const listAdmins = async (req, res) => {
 export {
     registroAdmin,
     confirmarMail,
-    updateFace,
     recuperarPassword,
     comprobarTokenPasword,
     crearNuevoPassword,
