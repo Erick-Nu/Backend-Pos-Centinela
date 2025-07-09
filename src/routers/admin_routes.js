@@ -8,12 +8,16 @@ import {
     crearNuevoPassword,
     loginAdmin
 } from '../controllers/admin_controller.js';
+import { verifyTokenJWT } from '../middlewares/JWT.js';
 
 const router = Router();
 
-router.post('/admins/register', registroAdmin);
+// Rutas privadas para administradores
+router.post('/admins/register', verifyTokenJWT, registroAdmin);
+router.put('/admins/update', verifyTokenJWT, updateFace);
+
+// Rutas públicas para administradores
 router.get('/admins/confirm/:token', confirmarMail);
-router.put('/admins/update', updateFace);
 router.post('/admins/password/recover', recuperarPassword);
 router.get('/admins/password/verify/:token', comprobarTokenPasword);
 router.post('/admins/password/reset/:token', crearNuevoPassword);

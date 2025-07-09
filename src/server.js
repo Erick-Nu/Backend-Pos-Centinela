@@ -31,42 +31,49 @@ app.get('/', (req, res) => {
     res.send(`
     <html>
         <head>
-        <title>🚀 API POS CENTINELA</title>
-        <style>
-            body {
-            background-color: #0f172a;
-            color: #facc15;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            }
-            h1 {
-            font-size: 3rem;
-            margin: 0;
-            }
-            p {
-            font-size: 1.2rem;
-            margin-top: 10px;
-            color: #94a3b8;
-            }
-            .emoji {
-            font-size: 4rem;
-            animation: spin 2s infinite linear;
-            }
-            @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-            }
-        </style>
+            <title>🚀 API POS CENTINELA</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
         </head>
-        <body>
-        <div class="emoji">🛒</div>
-        <h1>POS CENTINELA API</h1>
-        <p>🚀 Server Running Successfully 🚀</p>
+        <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
+            <div style="max-width: 600px; margin: 40px auto; border-radius: 16px; border: 1px solid #e0e0e0; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); overflow: hidden;">
+
+            <!-- Encabezado -->
+            <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
+                <h1 style="margin: 0; font-size: 30px; color: #ffffff; letter-spacing: 1px;">POS CENTINELA</h1>
+                <p style="margin-top: 8px; color: #d0f4f0; font-size: 15px; font-style: italic;">Monitorea. Aprende. Mejora.</p>
+            </div>
+
+            <!-- Imagen -->
+            <div style="text-align: center; padding: 24px;">
+                <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWV6eHZycTNlejV4Y2MxMDk2aGNzZjBkdDFsZWc3NGR1NHdwa29iMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gYZ7qO81g4dt6/giphy.gif" 
+                alt="Sticker animado" 
+                style="width: 300px; max-width: 100%; border-radius: 10px;" />
+            </div>
+
+            <!-- Cuerpo -->
+            <div style="padding: 0 32px 32px 32px;">
+                <h2 style="color: #1a202c; text-align: center; font-size: 22px;">¡Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span>!</h2>
+
+                <p style="font-size: 16px; color: #4a5568; text-align: center; line-height: 1.6;">
+                🚀 API de monitoreo activa y funcionando correctamente.
+                </p>
+
+                <div style="text-align: center; margin-top: 24px;">
+                <a href="https://github.com/Erick-Nu/Backend-Pos-Centinela"  
+                    target="_blank"
+                    style="background-color: #1abc9c; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
+                    Ver Proyecto en GitHub
+                </a>
+                </div>
+            </div>
+
+            <!-- Pie -->
+            <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
+                🤖 El equipo de <strong>POS CENTINELA</strong> está feliz de tenerte con nosotros.<br>
+                <em>Monitorea. Aprende. Mejora.</em>
+            </div>
+            </div>
         </body>
     </html>
     `);

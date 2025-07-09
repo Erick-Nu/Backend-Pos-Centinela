@@ -1,5 +1,6 @@
 import Administrador from "../models/administradores.js"
 import { sendMailToRegister, sendMailToRecoveryPassword } from "../config/nodemailer.js"
+import { createTokenJWT } from "../middlewares/JWT.js";
 
 const registroAdmin = async (req,res)=>{
     const {nombres,apellidos,email,cedula} = req.body
@@ -83,7 +84,9 @@ const loginAdmin = async(req,res)=>{
     if (!verificarCode)
         return res.status(401).json({ msg: "Lo sentimos, tu código de administrador no es correcto" });
     const { nombres, apellidos, cedula, _id, rol } = administradorBDD;
+    const token = createTokenJWT(administradorBDD._id, administradorBDD.rol);
     res.status(200).json({
+        token,
         nombres,
         apellidos,
         cedula,
