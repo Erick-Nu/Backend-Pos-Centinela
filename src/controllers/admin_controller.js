@@ -118,7 +118,8 @@ const perfilAdmin = async (req, res) => {
 
 const updatePerfil = async (req, res) => {
     const {id} = req.params
-    const {nombre,apellido,direccion,celular,email} = req.body
+    const {nombre,apellido,email} = req.body
+    const { files } = req;
     if( !mongoose.Types.ObjectId.isValid(id) ) return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});
     if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
     const administradorBDD = await Administrador.findById(id)
@@ -131,17 +132,15 @@ const updatePerfil = async (req, res) => {
             return res.status(409).json({msg:`Lo sentimos, el email ${email} ya se encuentra registrado`})  
         }
     }
-    if(req.files?.imagen){
-        const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.imagen.tempFilePath,{folder:'Administradores'});
+    if(files?.imagen){
+        const { secure_url, public_id } = await cloudinary.uploader.upload(files.imagen.tempFilePath,{folder:'Administradores'});
         administradorBDD.foto = secure_url
         administradorBDD.fotoID = public_id
-        await fs.unlink(req.files.imagen.tempFilePath)
+        await fs.unlink(files.imagen.tempFilePath)
     }
     // Operador ??: asigna el valor de la derecha si el valor de la izquierda es null o undefined
     administradorBDD.nombre = nombre ?? administradorBDD.nombre
     administradorBDD.apellido = apellido ?? administradorBDD.apellido
-    administradorBDD.direccion = direccion ?? administradorBDD.direccion
-    administradorBDD.celular = celular ?? administradorBDD.celular
     administradorBDD.email = email ?? administradorBDD.email
     administradorBDD.foto = administradorBDD.foto ?? "https://res.cloudinary.com/dmccize09/image/upload/v1735688850/centinela/usuarios/usuario-default.png";
     administradorBDD.fotoID = administradorBDD.fotoID ?? "usuario-default.png";
