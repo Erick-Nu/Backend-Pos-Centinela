@@ -6,6 +6,8 @@ import routerAdministradores from './routers/admin_routes.js';
 import routerEmpleados from './routers/empleados_routes.js';
 import routerJefes from './routers/jefes_routes.js';
 import routerNegocios from './routers/negocios_routes.js';
+import cloudinary from 'cloudinary'
+import fileUpload from "express-fileupload"
 
 // Inicializaciones
 const app = express()
@@ -21,6 +23,16 @@ app.use(cors())
 // Este middleware permite que el servidor pueda recibir datos en formato JSON
 app.use(express.json())
 
+// Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './uploads'
+}));
 
 // Variables globales
 

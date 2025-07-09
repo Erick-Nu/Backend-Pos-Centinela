@@ -6,7 +6,11 @@ import {
     recuperarPassword,
     comprobarTokenPasword,
     crearNuevoPassword,
-    loginAdmin
+    loginAdmin,
+    perfilAdmin,
+    updatePerfil,
+    updatePassword,
+    listAdmins
 } from '../controllers/admin_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
 
@@ -14,7 +18,10 @@ const router = Router();
 
 // Rutas privadas para administradores
 router.post('/admins/register', verifyTokenJWT, registroAdmin);
-router.put('/admins/update', verifyTokenJWT, updateFace);
+router.get('/admins/perfil', verifyTokenJWT, perfilAdmin);
+router.put('/admins/update/:id', verifyTokenJWT, updatePerfil);
+router.put('/admins/update/password', verifyTokenJWT, updatePassword);
+router.get('/admins/list', verifyTokenJWT, listAdmins);
 
 // Rutas públicas para administradores
 router.get('/admins/confirm/:token', confirmarMail);

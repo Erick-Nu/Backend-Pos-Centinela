@@ -1,6 +1,10 @@
 import Administrador from "../models/administradores.js"
 import { sendMailToRegister, sendMailToRecoveryPassword } from "../config/nodemailer.js"
 import { createTokenJWT } from "../middlewares/JWT.js";
+import mongoose from "mongoose";
+import { sendMailToOwner } from "../config/nodemailer.js"
+import { v2 as cloudinary } from 'cloudinary'
+import fs from "fs-extra"
 
 const registroAdmin = async (req,res)=>{
     const {nombres,apellidos,email,cedula} = req.body
@@ -97,26 +101,70 @@ const loginAdmin = async(req,res)=>{
     });
 };
 
-
-// Metodos Personalizadas para el administrador [Actualizar Perfil]
-const updateFace = async (req, res) => {
-    const { email, nombres, apellidos } = req.body;
-
-    // Buscar administrador
-    const administradorBDD = await Administrador.findOne({ email });
-    if (!administradorBDD) {
-        return res.status(404).json({ msg: "El administrador no existe" });
-    }
-
-    // Actualizar campos si fueron enviados
-    if (nombres) administradorBDD.nombres = nombres;
-    if (apellidos) administradorBDD.apellidos = apellidos;
-
-    // Guardar cambios
-    await administradorBDD.save();
-    return res.status(200).json({ msg: "Perfil actualizado correctamente", persona: administradorBDD });
+const perfilAdmin = async (req, res) => {
+    const { password, token, confirmEmail, createdAt,updatedAt,__v, isDeleted, ... datosPerfil} = req.administradorBDD;
+    res.status(200).json(datosPerfil);
 };
 
+const updatePerfil = async (req, res) => {
+    const {id} = req.params
+    const {nombre,apellido,direccion,celular,email} = req.body
+    if( !mongoose.Types.ObjectId.isValid(id) ) return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});
+    if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    const administradorBDD = await Administrador.findById(id)
+    if(!administradorBDD) return res.status(404).json({msg:`Lo sentimos, no existe el administrador ${id}`})
+    if (administradorBDD.email !== email)
+    {
+        const administradorBDDMail = await Administrador.findOne({email})
+        if (administradorBDDMail)
+        {
+            return res.status(409).json({msg:`Lo sentimos, el email ${email} ya se encuentra registrado`})  
+        }
+    }
+    if(req.files?.imagen){
+        const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.imagen.tempFilePath,{folder:'Administradores'});
+        administradorBDD.foto = secure_url
+        administradorBDD.fotoID = public_id
+        await fs.unlink(req.files.imagen.tempFilePath)
+    }
+    // Operador ??: asigna el valor de la derecha si el valor de la izquierda es null o undefined
+    administradorBDD.nombre = nombre ?? administradorBDD.nombre
+    administradorBDD.apellido = apellido ?? administradorBDD.apellido
+    administradorBDD.direccion = direccion ?? administradorBDD.direccion
+    administradorBDD.celular = celular ?? administradorBDD.celular
+    administradorBDD.email = email ?? administradorBDD.email
+    administradorBDD.foto = administradorBDD.foto ?? "https://res.cloudinary.com/dmccize09/image/upload/v1735688850/centinela/usuarios/usuario-default.png";
+    administradorBDD.fotoID = administradorBDD.fotoID ?? "usuario-default.png";
+    await administradorBDD.save()
+    res.status(200).json({
+        msg: "Datos actualizados correctamente",
+        data: administradorBDD
+    });
+};
+
+const updatePassword = async (req, res) => {
+    const {id} = req.administradorBDD;
+    const {password, confirmPassword, adminCode} = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id)) 
+        return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});
+    if (Object.values(req.body).includes("")) 
+        return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"});
+    if (password !== confirmPassword)
+        return res.status(400).json({msg:"Lo sentimos, los passwords no coinciden"});
+    if (adminCode !== req.administradorBDD.adminCode)
+        return res.status(400).json({msg:"Lo sentimos, el código de administrador no es correcto"});
+    const administradorBDD = await Administrador.findById(id);
+    if (!administradorBDD)
+        return res.status(404).json({msg:`Lo sentimos, no existe el administrador`});
+    administradorBDD.password = await administradorBDD.encrypPassword(password);
+    await administradorBDD.save();
+    res.status(200).json({msg:"Password actualizado correctamente"});
+};
+
+const listAdmins = async (req, res) => {
+    const administradores = await Administrador.find().select("-password -createdAt -updatedAt -__v");
+    res.status(200).json(administradores);
+};
 
 
 export {
@@ -126,5 +174,9 @@ export {
     recuperarPassword,
     comprobarTokenPasword,
     crearNuevoPassword,
-    loginAdmin
+    loginAdmin,
+    perfilAdmin,
+    updatePerfil,
+    updatePassword,
+    listAdmins
 }

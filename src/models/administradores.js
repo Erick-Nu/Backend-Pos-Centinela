@@ -29,6 +29,16 @@ const administradorSchema = new Schema({
         type:String,
         required:true
     },
+    foto:{
+        type:String,
+        default:"https://res.cloudinary.com/dmccize09/image/upload/v1735688850/centinela/usuarios/usuario-default.png",
+        trim: true
+    },
+    fotoID:{
+        type:String,
+        default:"usuario-default.png",
+        trim: true
+    },
     adminCode:{
         type:String,
         unique: true,
