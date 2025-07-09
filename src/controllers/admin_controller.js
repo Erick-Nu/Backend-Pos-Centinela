@@ -120,7 +120,6 @@ const updatePerfil = async (req, res) => {
     try {
         const { id } = req.params;
         const { nombres, apellidos, email } = req.body;
-        const { files } = req;
         if (!mongoose.Types.ObjectId.isValid(id))
             return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
         if (Object.values(req.body).includes(""))
@@ -133,23 +132,17 @@ const updatePerfil = async (req, res) => {
         if (administradorBDDMail)
             return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
         }
-
-        if (files?.imagen) {
-            const { secure_url, public_id } = await cloudinary.uploader.upload(
-            files.imagen.tempFilePath,
-            { folder: 'Administradores' }
-        );
+        if(req.files?.imagen){
+            const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.imagen.tempFilePath,{folder:'Administradores'});
             administradorBDD.foto = secure_url;
             administradorBDD.fotoID = public_id;
-            await fs.unlink(files.imagen.tempFilePath);
+            await fs.unlink(req.files.imagen.tempFilePath);
         }
-
-        // ✅ Actualización usando tu operador ??
         administradorBDD.nombres = nombres ?? administradorBDD.nombres;
         administradorBDD.apellidos = apellidos ?? administradorBDD.apellidos;
         administradorBDD.email = email ?? administradorBDD.email;
-        administradorBDD.foto = administradorBDD.foto ?? "https://res.cloudinary.com/dmccize09/image/upload/v1735688850/centinela/usuarios/usuario-default.png";
-        administradorBDD.fotoID = administradorBDD.fotoID ?? "usuario-default.png";
+        administradorBDD.foto = secure_url ?? administradorBDD.foto;
+        administradorBDD.fotoID = public_id ?? administradorBDD.fotoID;
 
         await administradorBDD.save();
 
