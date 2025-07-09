@@ -115,7 +115,6 @@ const perfilAdmin = async (req, res) => {
     res.status(200).json(datosPerfil);
 };
 
-
 const updatePerfil = async (req, res) => {
     try {
         const { id } = req.params;
@@ -142,7 +141,7 @@ const updatePerfil = async (req, res) => {
         administradorBDD.apellidos = apellidos ?? administradorBDD.apellidos;
         administradorBDD.email = email ?? administradorBDD.email;
         await administradorBDD.save();
-        const administradorActualizado = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted");
+        const administradorActualizado = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token");
         res.status(200).json({
             msg: "Datos actualizados correctamente",
             data: administradorActualizado
@@ -153,9 +152,8 @@ const updatePerfil = async (req, res) => {
     }
 };
 
-
 const updatePassword = async (req, res) => {
-    const {id} = req.administradorBDD;
+    const {id} = req.administradorBDD.toObject();
     const {password, confirmPassword, adminCode} = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});

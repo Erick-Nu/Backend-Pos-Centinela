@@ -31,12 +31,12 @@ const administradorSchema = new Schema({
     },
     foto:{
         type:String,
-        default:"https://res.cloudinary.com/dmccize09/image/upload/v1735688850/centinela/usuarios/usuario-default.png",
+        default:"https://res.cloudinary.com/dmccize09/image/upload/v1752099442/Administradores/gjypqxqip7qmud3at6wc.png",
         trim: true
     },
     fotoID:{
         type:String,
-        default:"usuario-default.png",
+        default:"Administradores/gjypqxqip7qmud3at6wc",
         trim: true
     },
     adminCode:{
