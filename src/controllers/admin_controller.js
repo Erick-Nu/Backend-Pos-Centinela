@@ -141,9 +141,6 @@ const updatePerfil = async (req, res) => {
         administradorBDD.nombres = nombres ?? administradorBDD.nombres;
         administradorBDD.apellidos = apellidos ?? administradorBDD.apellidos;
         administradorBDD.email = email ?? administradorBDD.email;
-        administradorBDD.foto = secure_url ?? administradorBDD.foto;
-        administradorBDD.fotoID = public_id ?? administradorBDD.fotoID;
-
         await administradorBDD.save();
 
         res.status(200).json({
