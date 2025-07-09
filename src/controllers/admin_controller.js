@@ -117,39 +117,58 @@ const perfilAdmin = async (req, res) => {
 
 
 const updatePerfil = async (req, res) => {
-    const {id} = req.params
-    const {nombre,apellido,email} = req.body
+    try {
+    const { id } = req.params;
+    const { nombre, apellido, email } = req.body;
     const { files } = req;
-    if( !mongoose.Types.ObjectId.isValid(id) ) return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});
-    if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
-    const administradorBDD = await Administrador.findById(id)
-    if(!administradorBDD) return res.status(404).json({msg:`Lo sentimos, no existe el administrador ${id}`})
-    if (administradorBDD.email !== email)
-    {
-        const administradorBDDMail = await Administrador.findOne({email})
-        if (administradorBDDMail)
-        {
-            return res.status(409).json({msg:`Lo sentimos, el email ${email} ya se encuentra registrado`})  
-        }
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    if (Object.values(req.body).includes(""))
+        return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
+    const administradorBDD = await Administrador.findById(id);
+    if (!administradorBDD)
+        return res.status(404).json({ msg: `Lo sentimos, no existe el administrador ${id}` });
+    if (administradorBDD.email !== email) {
+        const administradorBDDMail = await Administrador.findOne({ email });
+    if (administradorBDDMail)
+        return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
     }
-    if(files?.imagen){
-        const { secure_url, public_id } = await cloudinary.uploader.upload(files.imagen.tempFilePath,{folder:'Administradores'});
-        administradorBDD.foto = secure_url
-        administradorBDD.fotoID = public_id
-        await fs.unlink(files.imagen.tempFilePath)
+
+    if (files?.imagen) {
+        const { secure_url, public_id } = await cloudinary.uploader.upload(
+        files.imagen.tempFilePath,
+        { folder: 'Administradores' }
+    );
+        administradorBDD.foto = secure_url;
+        administradorBDD.fotoID = public_id;
+        await fs.unlink(files.imagen.tempFilePath);
     }
-    // Operador ??: asigna el valor de la derecha si el valor de la izquierda es null o undefined
-    administradorBDD.nombre = nombre ?? administradorBDD.nombre
-    administradorBDD.apellido = apellido ?? administradorBDD.apellido
-    administradorBDD.email = email ?? administradorBDD.email
+
+    // ✅ Limpieza previa para que funcione bien tu operador ??
+    for (const key in req.body) {
+        if (req.body[key]?.trim() === "") req.body[key] = undefined;
+    }
+
+    // ✅ Actualización usando tu operador ??
+    administradorBDD.nombre = nombre ?? administradorBDD.nombre;
+    administradorBDD.apellido = apellido ?? administradorBDD.apellido;
+    administradorBDD.email = email ?? administradorBDD.email;
+
     administradorBDD.foto = administradorBDD.foto ?? "https://res.cloudinary.com/dmccize09/image/upload/v1735688850/centinela/usuarios/usuario-default.png";
     administradorBDD.fotoID = administradorBDD.fotoID ?? "usuario-default.png";
-    await administradorBDD.save()
+
+    await administradorBDD.save();
+
     res.status(200).json({
         msg: "Datos actualizados correctamente",
         data: administradorBDD
     });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error interno del servidor" });
+    }
 };
+
 
 const updatePassword = async (req, res) => {
     const {id} = req.administradorBDD;
