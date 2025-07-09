@@ -8,9 +8,9 @@ const createTokenJWT = (id, rol) => {
 const verifyTokenJWT = async(req, res, next) => {
     const {authorization} = req.headers;
     if (!authorization)
-        return res.status(401).json({msg: "Acceso denegado: Token no prporcionado"});
+        return res.status(401).json({msg: "Acceso denegado: Token no proporcionado"});
     try {
-        const token = authorization.slit(' ')[1];
+        const token = authorization.split(' ')[1];
         const {id, rol} = jwt.verify(token, process.env.JWT_SECRET);
         if (rol === 'administrador') {
             req.administradorBDD = await Administrador.findById(id).select('-password -token -__v');
