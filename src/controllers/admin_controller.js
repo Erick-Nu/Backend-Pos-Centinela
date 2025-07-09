@@ -142,9 +142,10 @@ const updatePerfil = async (req, res) => {
         administradorBDD.apellidos = apellidos ?? administradorBDD.apellidos;
         administradorBDD.email = email ?? administradorBDD.email;
         await administradorBDD.save();
+        const administradorActualizado = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted");
         res.status(200).json({
             msg: "Datos actualizados correctamente",
-            data: administradorBDD.select("-password -createdAt -updatedAt -__v -isDeleted")
+            data: administradorActualizado
         });
     } catch (error) {
         console.error(error);
