@@ -2,7 +2,6 @@ import Administrador from "../models/administradores.js"
 import { sendMailToRegister, sendMailToRecoveryPassword } from "../config/nodemailer.js"
 import { createTokenJWT } from "../middlewares/JWT.js";
 import mongoose from "mongoose";
-import { sendMailToOwner } from "../config/nodemailer.js"
 import { v2 as cloudinary } from 'cloudinary'
 import fs from "fs-extra"
 
