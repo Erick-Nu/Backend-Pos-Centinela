@@ -126,26 +126,25 @@ const updatePerfil = async (req, res) => {
             return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
         const administradorBDD = await Administrador.findById(id);
         if (!administradorBDD)
-            return res.status(404).json({ msg: `Lo sentimos, no existe el administrador ${id}` });
+            return res.status(404).json({ msg: `Lo sentimos, no existe el administrador` });
         if (administradorBDD.email !== email) {
             const administradorBDDMail = await Administrador.findOne({ email });
-        if (administradorBDDMail)
-            return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
+            if (administradorBDDMail)
+                return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
         }
-        if(req.files?.imagen){
-            const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.imagen.tempFilePath,{folder:'Administradores'});
+        if(req.files?.foto){
+            const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.foto.tempFilePath,{folder:'Administradores'});
             administradorBDD.foto = secure_url;
             administradorBDD.fotoID = public_id;
-            await fs.unlink(req.files.imagen.tempFilePath);
+            await fs.unlink(req.files.foto.tempFilePath);
         }
         administradorBDD.nombres = nombres ?? administradorBDD.nombres;
         administradorBDD.apellidos = apellidos ?? administradorBDD.apellidos;
         administradorBDD.email = email ?? administradorBDD.email;
         await administradorBDD.save();
-
         res.status(200).json({
             msg: "Datos actualizados correctamente",
-            data: administradorBDD
+            data: administradorBDD.select("-password -createdAt -updatedAt -__v -isDeleted")
         });
     } catch (error) {
         console.error(error);
