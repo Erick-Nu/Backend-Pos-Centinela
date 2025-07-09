@@ -101,9 +101,20 @@ const loginAdmin = async(req,res)=>{
 };
 
 const perfilAdmin = async (req, res) => {
-    const { password, token, confirmEmail, createdAt,updatedAt,__v, isDeleted, ... datosPerfil} = req.administradorBDD;
+    const {
+        password,
+        token,
+        confirmEmail,
+        createdAt,
+        updatedAt,
+        __v,
+        isDeleted,
+        ...datosPerfil
+    } = req.administradorBDD.toObject();
+
     res.status(200).json(datosPerfil);
 };
+
 
 const updatePerfil = async (req, res) => {
     const {id} = req.params
