@@ -204,6 +204,7 @@ const listBoss = async (req, res) => {
     res.status(200).json(bosses);
 };
 
+// Falta de actualizar las propiedades de los jefes
 const deleteBoss = async (req, res) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
