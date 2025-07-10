@@ -18,8 +18,8 @@ const router = Router();
 // Rutas privadas para administradores
 router.post('/admins/register', verifyTokenJWT, registroAdmin);
 router.get('/admins/perfil', verifyTokenJWT, perfilAdmin);
-router.put('/admins/update/:id', verifyTokenJWT, updatePerfil);
-router.put('/admins/update/password', verifyTokenJWT, updatePassword);
+router.put('/admins/perfil/update', verifyTokenJWT, updatePerfil);
+router.put('/admins/perfil/update/password', verifyTokenJWT, updatePassword);
 router.get('/admins/list', verifyTokenJWT, listAdmins);
 
 // Rutas públicas para administradores

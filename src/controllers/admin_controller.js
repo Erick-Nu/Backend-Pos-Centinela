@@ -116,10 +116,10 @@ const perfilAdmin = async (req, res) => {
 
 const updatePerfil = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.administradorBDD;
         const { nombres, apellidos, email } = req.body;
         if (!mongoose.Types.ObjectId.isValid(id))
-            return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+            return res.status(404).json({ msg: "Lo sentimos, debe ser un id" });
         if (Object.values(req.body).includes(""))
             return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
         const administradorBDD = await Administrador.findById(id);
@@ -152,22 +152,22 @@ const updatePerfil = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-    const id = req.administradorBDD._id;
-    const {password, confirmPassword, adminCode} = req.body;
-    if (!mongoose.Types.ObjectId.isValid(id)) 
-        return res.status(404).json({msg:`Lo sentimos, debe ser un id válido`});
-    if (Object.values(req.body).includes("")) 
-        return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"});
+    const { id } = req.administradorBDD;
+    const { password, confirmPassword, adminCode } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: `Lo sentimos, debe ser un id válido` });
+    if (Object.values(req.body).includes(""))
+        return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
     if (password !== confirmPassword)
-        return res.status(400).json({msg:"Lo sentimos, los passwords no coinciden"});
+        return res.status(400).json({ msg: "Lo sentimos, los passwords no coinciden" });
     if (adminCode !== req.administradorBDD.adminCode)
-        return res.status(400).json({msg:"Lo sentimos, el código de administrador no es correcto"});
+        return res.status(400).json({ msg: "Lo sentimos, el código de administrador no es correcto" });
     const administradorBDD = await Administrador.findById(id);
     if (!administradorBDD)
-        return res.status(404).json({msg:`Lo sentimos, no existe el administrador`});
+        return res.status(404).json({ msg: `Lo sentimos, no existe el administrador` });
     administradorBDD.password = await administradorBDD.encrypPassword(password);
     await administradorBDD.save();
-    res.status(200).json({msg:"Password actualizado correctamente"});
+    res.status(200).json({ msg: "Password actualizado correctamente" });
 };
 
 
