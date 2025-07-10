@@ -200,7 +200,7 @@ const deleteAdmin = async (req, res) => {
 };
 
 const listBoss = async (req, res) => {
-    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted").populate("companyNames", "companyName").populate("companyCodes", "codigoNegocio");
     res.status(200).json(bosses);
 };
 

@@ -58,11 +58,11 @@ const jefeSchema = new Schema({
         type: Boolean,
         default: false
     },
-    companyName:[{
+    companyNames:[{
         type: Schema.Types.ObjectId,
         ref: 'negocios'
     }],
-    companyCode:[{
+    companyCodes:[{
         type: String,
         default: null
     }],
