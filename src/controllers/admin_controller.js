@@ -1,4 +1,5 @@
 import Administrador from "../models/administradores.js"
+import Boss from "../models/jefes.js"
 import { sendMailToRegister, sendMailToRecoveryPassword } from "../config/nodemailer.js"
 import { createTokenJWT } from "../middlewares/JWT.js";
 import mongoose from "mongoose";
@@ -172,10 +173,48 @@ const updatePassword = async (req, res) => {
 
 
 const listAdmins = async (req, res) => {
-    const administradores = await Administrador.find().select("-password -createdAt -updatedAt -__v");
+    const administradores = await Administrador.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
     res.status(200).json(administradores);
 };
 
+const detalleAdmin = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    const administradorBDD = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    if (!administradorBDD)
+        return res.status(404).json({ msg: "Lo sentimos, no existe el administrador" });
+    res.status(200).json(administradorBDD);
+}
+
+const deleteAdmin = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    const administradorBDD = await Administrador.findById(id);
+    if (!administradorBDD)
+        return res.status(404).json({ msg: "Lo sentimos, no existe el administrador" });
+    administradorBDD.isDeleted = true;
+    await administradorBDD.save();
+    res.status(200).json({ msg: "Administrador eliminado correctamente" });
+};
+
+const listBoss = async (req, res) => {
+    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    res.status(200).json(bosses);
+};
+
+const deleteBoss = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    const bossBDD = await Boss.findById(id);
+    if (!bossBDD)
+        return res.status(404).json({ msg: "Lo sentimos, no existe el jefe" });
+    bossBDD.isDeleted = true;
+    await bossBDD.save();
+    res.status(200).json({ msg: "Jefe eliminado correctamente" });
+};
 
 export {
     registroAdmin,
@@ -187,5 +226,9 @@ export {
     perfilAdmin,
     updatePerfil,
     updatePassword,
-    listAdmins
+    listAdmins,
+    detalleAdmin,
+    deleteAdmin,
+    listBoss,
+    deleteBoss
 }

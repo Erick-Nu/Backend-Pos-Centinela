@@ -9,7 +9,10 @@ import {
     perfilAdmin,
     updatePerfil,
     updatePassword,
-    listAdmins
+    listAdmins,
+    deleteAdmin,
+    listBoss,
+    deleteBoss
 } from '../controllers/admin_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
 
@@ -21,6 +24,10 @@ router.get('/admins/perfil', verifyTokenJWT, perfilAdmin);
 router.put('/admins/perfil/update', verifyTokenJWT, updatePerfil);
 router.put('/admins/perfil/update/password', verifyTokenJWT, updatePassword);
 router.get('/admins/list', verifyTokenJWT, listAdmins);
+router.get('/admins/detail/:id', verifyTokenJWT, detalleAdmin);
+router.delete('/admins/delete/:id', verifyTokenJWT, deleteAdmin);
+router.get('/admins/list/boss', verifyTokenJWT, listBoss);
+router.delete('/admins/delete/boss/:id', verifyTokenJWT, deleteBoss);
 
 // Rutas públicas para administradores
 router.get('/admins/confirm/:token', confirmarMail);
