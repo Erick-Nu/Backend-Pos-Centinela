@@ -10,6 +10,7 @@ import {
     updatePerfil,
     updatePassword,
     listAdmins,
+    detalleAdmin,
     deleteAdmin,
     listBoss,
     deleteBoss
