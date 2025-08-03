@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+    consultaCedula,
     registerBoss,
     confirmEmail,
     recoverPassword,
@@ -10,6 +11,7 @@ import {
 
 const router = Router();
 
+router.post('/boss/consulta/cedula', consultaCedula);
 router.post('/boss/register', registerBoss);
 router.get('/boss/confirm/:token', confirmEmail);
 router.post('/boss/password/recover', recoverPassword);

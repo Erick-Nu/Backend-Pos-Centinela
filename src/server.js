@@ -8,7 +8,11 @@ import routerJefes from './routers/jefes_routes.js';
 import routerNegocios from './routers/negocios_routes.js';
 import cloudinary from 'cloudinary'
 import fileUpload from "express-fileupload"
-
+import session from 'express-session';
+import passport from 'passport';
+import routerAuthGoogle from './routers/authGoogle_routes.js';
+import './config/passport_google.js';
+// Hacer uso de la configuración de Passport para Google OAuth
 // Inicializaciones
 const app = express()
 // Carga las variables definidas en el archivo .env al process.env.
@@ -33,6 +37,19 @@ app.use(fileUpload({
     useTempFiles : true,
     tempFileDir : './uploads'
 }));
+
+// Sesión (requerida por Passport)
+app.use(session({
+    secret: 'mi_secreto',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Rutas de Google OAuth
+app.use('/api', routerAuthGoogle);
 
 // Variables globales
 
@@ -76,6 +93,23 @@ app.get('/', (req, res) => {
                     target="_blank"
                     style="background-color: #1abc9c; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
                     Ver Proyecto en GitHub
+                </a>
+                </div>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="http://localhost:3000/api/auth/google"  
+                    target="_blank"
+                    style="background-color: #000000ff; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
+                    Registro with Google
+                </a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="http://localhost:3000/api/auth/google"  
+                    target="_blank"
+                    style="background-color: #000000ff; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
+                    Inicio de Sesión with Google
                 </a>
                 </div>
             </div>

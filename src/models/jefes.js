@@ -14,7 +14,7 @@ const jefeSchema = new Schema({
     },
     cedula: {
         type: String,
-        require: true,
+        required: true,
         trim: true,
         unique: true
     },
@@ -67,8 +67,9 @@ const jefeSchema = new Schema({
         default: null
     }],
     plan:{
-        type: Boolean,
-        default: true
+        type: String,
+        enum: ['starter', 'business', 'enterprise'],
+        default: 'starter'
     }
 }, {
     timestamps: true
@@ -85,13 +86,13 @@ jefeSchema.methods.encrypPassword = async function(password) {
 jefeSchema.methods.matchPassword =  async function (password) {
     const response = await bcrypt.compare(password, this.password);
     return response;
-}
+};
 
 // 3. Método para crear un token
 jefeSchema.methods.createToken = async function () {
     const tokenGenerado = this.token = Math.random().toString(36).slice(2);
     return tokenGenerado;
-}
+};
 
 
 export default model('Jefes', jefeSchema);

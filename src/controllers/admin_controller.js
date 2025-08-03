@@ -99,7 +99,7 @@ const loginAdmin = async(req,res)=>{
         rol,
         _id
     });
-};
+};      
 
 const perfilAdmin = async (req, res) => {
     const {
@@ -199,12 +199,12 @@ const deleteAdmin = async (req, res) => {
     res.status(200).json({ msg: "Administrador eliminado correctamente" });
 };
 
+// Falta de actualizar las propiedades de los jefes para continuar este CRUD
 const listBoss = async (req, res) => {
     const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
     res.status(200).json(bosses);
 };
 
-// Falta de actualizar las propiedades de los jefes
 const deleteBoss = async (req, res) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))

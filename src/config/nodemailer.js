@@ -294,7 +294,7 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) 
 
 // Verificacion de un nuevo Jefe correo personalizado
 
-const sendMailToNewBoss = (userMail, token, rol) => {
+const sendMailToNewBoss = (userMail, token, rol, nombres) => {
     let mailOptions = {
         from: 'admin@centinela.ec',
         to: userMail,
@@ -320,7 +320,9 @@ const sendMailToNewBoss = (userMail, token, rol) => {
             <div style="padding: 0 30px 30px 30px;">
                 <h2 style="color: #1a202c; text-align: center; font-size: 22px;">Bienvenido a <span style="color:#1abc9c;">POS CENTINELA</span></h2>
 
-                <p style="font-size: 16px; color: #4a5568;">Hola,</p>
+                <p style="font-size: 16px; color: #4a5568;">
+                Hola <span style="color: #000000ff;">${nombres}</span>,
+                </p>
 
                 <p style="font-size: 16px; color: #4a5568; text-align: justify;">
                     Gracias por unirte al equipo de POS CENTINELA, la plataforma que utiliza Inteligencia Artificial para mejorar la productividad.

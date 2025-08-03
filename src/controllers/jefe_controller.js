@@ -1,8 +1,41 @@
 import Boss from "../models/jefes.js"
 import { sendMailToNewBoss, sendMailToRecoveryPasswordBoss } from "../config/nodemailer.js"
 
+const consultaCedula = async (req, res) => {
+    const { cedula } = req.body;
+    if (Object.values(req.body).includes(""))
+        return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
+    const cedulaExistente = await Boss.findOne({ cedula });
+    if (cedulaExistente) {
+        return res.status(400).json({ msg: "Lo sentimos, la cédula ya se encuentra registrada" });
+    }
+    try {
+        const response = await fetch(`https://webservices.ec/api/cedula/${cedula}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${process.env.WEB_SERVICE_TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+        });
+        const usuario = await response.json(); 
+        res.status(200).json({
+            msg: "La cédula es válida",
+            data: {
+                nombres: usuario.data.response.nombres,
+                apellidos: usuario.data.response.apellidos,
+                cedula: usuario.data.response.identificacion,
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            msg: 'La cédula no es válida'
+        });
+    }
+};
+
+
 const registerBoss = async (req,res)=>{
-    const {email,password,cedula} = req.body
+    const {email,password,cedula,nombres,apellidos} = req.body
     if (Object.values(req.body).includes("")) 
         return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"});
     const verificarEmailBDD = await Boss.findOne({email});
@@ -15,7 +48,10 @@ const registerBoss = async (req,res)=>{
     nuevoBoss.password = await nuevoBoss.encrypPassword(password);
     const token = await nuevoBoss.createToken();
     const rol = nuevoBoss.rol;
-    await sendMailToNewBoss(email,token,rol);
+    const primerNombre = nombres.split(" ")[0];
+    const primerApellido = apellidos.split(" ")[0];
+    const nombreCompleto = `${primerNombre} ${primerApellido}`;
+    await sendMailToNewBoss(email,token,rol,nombreCompleto);
     await nuevoBoss.save();
     res.status(200).json({msg:"Revisa tu correo electrónico para confirmar tu cuenta"});
 }
@@ -86,6 +122,7 @@ const loginBoss = async(req,res)=>{
 
 
 export {
+    consultaCedula,
     registerBoss,
     confirmEmail,
     recoverPassword,
