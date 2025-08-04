@@ -1,5 +1,6 @@
 import Boss from "../models/jefes.js"
 import { sendMailToNewBoss, sendMailToRecoveryPasswordBoss } from "../config/nodemailer.js"
+import { createTokenJWT } from "../middlewares/JWT.js";
 
 const consultaCedula = async (req, res) => {
     const { cedula } = req.body;
@@ -107,7 +108,9 @@ const loginBoss = async(req,res)=>{
     const verificarPassword = await bossBDD.matchPassword(password);
     if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, el password no es el correcto"});
     const {nombres,apellidos,cedula,_id,rol,plan, companyName, companyCode} = bossBDD;
+    const token = createTokenJWT(bossBDD._id, bossBDD.rol);
     res.status(200).json({
+        token,
         nombres,
         apellidos,
         cedula,
@@ -120,6 +123,79 @@ const loginBoss = async(req,res)=>{
     });
 };
 
+const perfilBoss = async (req, res) => {
+    const {
+        password,
+        token,
+        confirmEmail,
+        createdAt,
+        updatedAt,
+        __v,
+        isDeleted,
+        ...datosPerfil
+    } = req.jefeBDD.toObject();
+    res.status(200).json(datosPerfil);
+};
+
+const updatePerfil = async (req, res) => {
+    try {
+        const { id } = req.jefeBDD;
+        const { nombres, apellidos, email } = req.body;
+        if (!mongoose.Types.ObjectId.isValid(id))
+            return res.status(404).json({ msg: "Lo sentimos, debe ser un id" });
+        if (Object.values(req.body).includes(""))
+            return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
+        const jefeBDD = await Boss.findById(id);
+        if (!jefeBDD)
+            return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
+        if (jefeBDD.email !== email) {
+            const jefeBDDMail = await Boss.findOne({ email });
+            if (jefeBDDMail)
+                return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
+        }
+        if(req.files?.foto){
+            const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.foto.tempFilePath,{folder:'Jefes'});
+            jefeBDD.foto = secure_url;
+            jefeBDD.fotoID = public_id;
+            await fs.unlink(req.files.foto.tempFilePath);
+        }
+        jefeBDD.nombres = nombres ?? jefeBDD.nombres;
+        jefeBDD.apellidos = apellidos ?? jefeBDD.apellidos;
+        jefeBDD.email = email ?? jefeBDD.email;
+        await jefeBDD.save();
+        const jefeActualizado = await Boss.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token");
+        res.status(200).json({
+            msg: "Datos actualizados correctamente",
+            data: jefeActualizado
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error interno del servidor" });
+    }
+};
+
+const updatePassword = async (req, res) => {
+    const { id } = req.jefeBDD;
+    const { password, confirmPassword } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: `Lo sentimos, debe ser un id válido` });
+    if (Object.values(req.body).includes(""))
+        return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
+    if (password !== confirmPassword)
+        return res.status(400).json({ msg: "Lo sentimos, los passwords no coinciden" });
+    const jefeBDD = await Boss.findById(id);
+    if (!jefeBDD)
+        return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
+    jefeBDD.password = await jefeBDD.encrypPassword(password);
+    await jefeBDD.save();
+    res.status(200).json({ msg: "Password actualizado correctamente" });
+};
+
+const listNegocios = async (req, res) => {
+    const {id} = req.jefeBDD;
+    
+}
+
 
 export {
     consultaCedula,
@@ -128,5 +204,8 @@ export {
     recoverPassword,
     comprobarTokenPasword,
     createNewPassword,
-    loginBoss
+    loginBoss,
+    perfilBoss,
+    updatePerfil,
+    updatePassword
 };

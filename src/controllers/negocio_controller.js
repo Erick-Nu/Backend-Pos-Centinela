@@ -3,16 +3,37 @@ import Boss from "../models/jefes.js";
 import { sendMailToRegisterNegocio } from "../config/nodemailer_negocios.js";
 
 const createNegocio = async (req, res) => {
-    const { emailBoss, companyName, ruc } = req.body;
+    const {id} = req.jefeDBB;
+    const { companyName, ruc } = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({ msg: "Lo sentimos, debes de llenar todos los datos" });
-    const jefeDBB = await Boss.findOne({ email: emailBoss });
-    const negocioNum = jefeDBB?.companyName;
-    if (negocioNum)
-        return res.status(400).json({ msg: "Lo sentimos, ya tienes registrado un negocio" });
+    const jefeDBB = await Boss.findById(id);
+    if (!jefeDBB) return res.status(404).json({ msg: "Jefe no encontrado" });
     const planDBB = jefeDBB?.plan;
-    if (!planDBB)
-        return res.status(401).json({ msg: "Lo sentimos, adquiere un plan para registrar tu negocio y puedas utilizar todos nuestros servicios" });
+    const numNegocios = jefeDBB?.companyNames?.length || 0;
+    const planLimits = {
+        starter: 1,
+        business: 5,
+        enterprise: Infinity
+    };
+    const maxNegocios = planLimits[planDBB];
+    if (maxNegocios !== undefined && numNegocios >= maxNegocios) {
+    let mensaje = '';
+    switch (planDBB) {
+        case 'starter':
+        mensaje = "Tu plan 'starter' solo permite registrar 1 negocio. Para agregar más, mejora tu suscripción.";
+        break;
+        case 'business':
+        mensaje = "Tu plan 'business' permite registrar hasta 5 negocios. Para continuar, mejora tu plan.";
+        break;
+        case 'enterprise':
+        mensaje = "Tu plan 'enterprise' permite negocios ilimitados. No deberías estar viendo este mensaje.";
+        break;
+        default:
+        mensaje = "Plan no válido. Comunícate con soporte.";
+    }
+    return res.status(401).json({ msg: mensaje });
+    }
     const newNegocio = new Negocios({
         ...req.body,
         emailBoss: jefeDBB._id
@@ -28,8 +49,8 @@ const createNegocio = async (req, res) => {
         contador++;
     }
     newNegocio.companyCode = finalCode;
-    jefeDBB.companyCode = finalCode;
-    jefeDBB.companyName = newNegocio._id;
+    jefeDBB.companyCodes.push(finalCode);
+    jefeDBB.companyNames.push(newNegocio._id);
     await newNegocio.save();
     await jefeDBB.save();
     res.status(200).json({ msg: "Tu negocio ha sido registrado correctamente" });
