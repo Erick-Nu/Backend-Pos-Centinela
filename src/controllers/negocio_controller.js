@@ -1,9 +1,10 @@
 import Negocios from "../models/negocios.js";
 import Boss from "../models/jefes.js";
-import { sendMailToRegisterNegocio } from "../config/nodemailer_negocios.js";
+import { sendMailToRegisterNegocio } from "../config/nodemailer_negocios.js"
+
 
 const createNegocio = async (req, res) => {
-    const {id} = req.jefeDBB;
+    const {id} = req.jefeBDD;
     const { companyName, ruc } = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({ msg: "Lo sentimos, debes de llenar todos los datos" });
