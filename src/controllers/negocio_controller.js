@@ -59,10 +59,11 @@ const createNegocio = async (req, res) => {
 
 
 const addEmployee = async (req, res) => {
-    const {emailEmpleado, emailJefe} = req.body;
+    const {id} = req.jefeBDD;
+    const {emailEmpleado} = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todo los datos"});
-    const jefeDBB = await Boss.findOne({email: emailJefe});
+    const jefeDBB = await Boss.findById(id);
     if (!jefeDBB)
         return res.status(404).json({msg:"Lo sentimos, el jefe no se encuentra registrado"});
     const negocioDBB = await Negocios.findOne({emailBoss: jefeDBB._id});
