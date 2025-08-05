@@ -55,6 +55,20 @@ const negocioSchema = new Schema({
         type: Boolean,
         default: true
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    logo: {
+        type: String,
+        default: "https://res.cloudinary.com/dmccize09/image/upload/v1752099442/Administradores/gjypqxqip7qmud3at6wc.png",
+        trim: true
+    },
+    logoID: {
+        type: String,
+        default: "Administradores/gjypqxqip7qmud3at6wc",
+        trim: true
+    }
 }, {
     timestamps: true
 });

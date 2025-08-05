@@ -1,6 +1,9 @@
 import Boss from "../models/jefes.js"
-import { sendMailToNewBoss, sendMailToRecoveryPasswordBoss } from "../config/nodemailer.js"
+import { sendMailToNewBoss, sendMailToRecoveryPasswordBoss,sendMailNewPasswordBoss} from "../config/nodemailer.js"
 import { createTokenJWT } from "../middlewares/JWT.js";
+import mongoose from "mongoose";
+import { v2 as cloudinary } from 'cloudinary';
+import fs from "fs-extra";
 
 const consultaCedula = async (req, res) => {
     const { cedula } = req.body;
@@ -163,7 +166,7 @@ const updatePerfil = async (req, res) => {
         jefeBDD.apellidos = apellidos ?? jefeBDD.apellidos;
         jefeBDD.email = email ?? jefeBDD.email;
         await jefeBDD.save();
-        const jefeActualizado = await Boss.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token");
+        const jefeActualizado = await Boss.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token").populate("companyNames", "_id companyName companyCode");
         res.status(200).json({
             msg: "Datos actualizados correctamente",
             data: jefeActualizado
@@ -188,13 +191,14 @@ const updatePassword = async (req, res) => {
         return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
     jefeBDD.password = await jefeBDD.encrypPassword(password);
     await jefeBDD.save();
+    const { email } = jefeBDD;
+    await sendMailNewPasswordBoss(email);
     res.status(200).json({ msg: "Password actualizado correctamente" });
 };
 
-const listNegocios = async (req, res) => {
-    const {id} = req.jefeBDD;
-    
-}
+
+
+
 
 
 export {

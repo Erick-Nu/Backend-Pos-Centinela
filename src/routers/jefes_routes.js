@@ -18,9 +18,7 @@ const router = Router();
 // Rutas privadas para jefes
 router.get('/boss/perfil', verifyTokenJWT, perfilBoss);
 router.put('/boss/perfil/update', verifyTokenJWT, updatePerfil);
-// Enviar un mesaje informando del cambio de contraseña
 router.put('/boss/perfil/update/password', verifyTokenJWT, updatePassword);
-
 
 
 // Rutas públicas para jefes

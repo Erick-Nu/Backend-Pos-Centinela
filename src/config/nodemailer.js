@@ -94,7 +94,7 @@ const sendMailToRegister = (email, password, token, rol, adminCode) => {
         if (error) {
             console.log(error);
         } else {
-            console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+            console.log("Correo enviado ✅: ", info.messageId);
         }
     })
 }
@@ -163,7 +163,7 @@ const sendMailToRecoveryPassword = async(email, token, adminCode) => {
         </div>
         `
     });
-    console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+    console.log("Correo enviado ✅: ", info.messageId);
 }
 
 
@@ -228,7 +228,7 @@ const sendMailToNewEmployee = (userMail, token, rol) => {
         if (error) {
             console.log(error);
         } else {
-            console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+            console.log("Correo enviado ✅: ", info.messageId);
         }
     })
 }
@@ -289,7 +289,7 @@ const sendMailToRecoveryPasswordEmployee = async (userMail, token, companyCode) 
         `
     });
 
-    console.log("Correo de recuperación enviado ✅:", info.messageId);
+    console.log("Correo enviado ✅:", info.messageId);
 };
 
 // Verificacion de un nuevo Jefe correo personalizado
@@ -354,7 +354,7 @@ const sendMailToNewBoss = (userMail, token, rol, nombres) => {
         if (error) {
             console.log(error);
         } else {
-            console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+            console.log("Correo Enviado: ", info.messageId);
         }
     })
 }
@@ -411,7 +411,61 @@ const sendMailToRecoveryPasswordBoss = async (userMail, token) => {
         `
     });
 
-    console.log("Correo de recuperación enviado ✅:", info.messageId);
+    console.log("Correo enviado ✅:", info.messageId);
+};
+
+const sendMailNewPasswordBoss = async (userMail) => {
+    let info = await transporter.sendMail({
+        from: 'admin@centinela.ec',
+        to: userMail,
+        subject: "POS CENTINELA EC - ¡Recupera tu contraseña y no la pierdas otra vez!",
+        html: `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
+
+            <div style="background-color: #1abc9c; padding: 24px 16px; text-align: center;">
+                <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
+                    POS CENTINELA
+                </h1>
+                <p style="margin: 6px 0 0; color: #e0f7f4; font-size: 14px; font-style: italic;">
+                    Monitorea. Aprende. Mejora.
+                </p>
+            </div>
+
+            <div style="text-align: center; padding: 20px;">
+                <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXc2NnRkbG1oc3RpaHJiMm03em5sMW1hNG0yYmV4MzF0Y2Nkd3ExcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zxnBe1tqyFRGPhD4oe/giphy.gif" 
+                    alt="Cámara de seguridad animada" 
+                    style="width: 200px; height: auto; border-radius: 8px;" />
+            </div>
+
+            <div style="padding: 0 30px 30px 30px;">
+                <h2 style="color: #1a202c; text-align: center; font-size: 22px;"> CONTRASEÑA CAMBIADA CON EXITO </h2>
+
+                <p style="font-size: 16px; color: #4a5568; text-align: justify;">
+                    Tu contraseña ha sido actualizada correctamente. Si realizaste este cambio, todo está listo. Si no, te recomendamos cambiarla de inmediato.
+                </p>
+
+                <p style="font-size: 16px; color: #4a5568;">
+                    Inicia sesión con tu nueva contraseña:
+                </p>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${process.env.URL_FRONTEND}/login"  
+                        style="background-color: #1abc9c; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+                        Iniciar sesión
+                    </a>
+                </div>
+
+                <p style="font-size: 14px; color: #718096; text-align: center;">Si no solicitaste este cambio, ignora el mensaje y contáctanos.</p>
+            </div>
+
+            <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
+                🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
+                <em>Monitorea. Aprende. Mejora.</em>
+            </div>
+        </div>
+        `
+    });
+    console.log("Correo enviado ✅:", info.messageId);
 };
 
 
@@ -423,5 +477,6 @@ export {
     sendMailToNewEmployee,
     sendMailToRecoveryPasswordEmployee,
     sendMailToNewBoss,
-    sendMailToRecoveryPasswordBoss
+    sendMailToRecoveryPasswordBoss,
+    sendMailNewPasswordBoss
 };
