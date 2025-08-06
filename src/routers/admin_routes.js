@@ -29,7 +29,7 @@ router.put('/admins/perfil/update/password', verifyTokenJWT, updatePassword);
 router.get('/admins/list', verifyTokenJWT, listAdmins);
 router.get('/admins/detail/:id', verifyTokenJWT, detalleAdmin);
 router.delete('/admins/delete/:id', verifyTokenJWT, deleteAdmin);
-router.put('/admins/activate/:adminId', verifyTokenJWT, activateAdmin);
+router.put('/admins/activate/:id', verifyTokenJWT, activateAdmin);
 router.get('/admins/list/boss', verifyTokenJWT, listBoss);
 router.get('/admins/detail/boss/:id', verifyTokenJWT, detalleBoss);
 
