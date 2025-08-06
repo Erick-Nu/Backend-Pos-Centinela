@@ -13,7 +13,6 @@ import {
     detalleAdmin,
     deleteAdmin,
     listBoss,
-    detalleBoss,
     activateAdmin
 } from '../controllers/admin_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
