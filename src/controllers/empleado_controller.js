@@ -1,6 +1,7 @@
 import Employee from "../models/empleados.js";
 import Negocio from "../models/negocios.js"
 import {sendMailToNewEmployee, sendMailToRecoveryPasswordEmployee} from "../config/nodemailer.js";
+import {createTokenJWT} from "../middlewares/jwt.js";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary'
 import fs from "fs-extra"
