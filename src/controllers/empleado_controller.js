@@ -129,7 +129,7 @@ const updatePerfil = async (req, res) => {
                 return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
         }
         if(req.files?.foto){
-            const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.foto.tempFilePath,{folder:'Administradores'});
+            const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.foto.tempFilePath,{folder:'Empleados'});
             empleadoBDD.foto = secure_url;
             empleadoBDD.fotoID = public_id;
             await fs.unlink(req.files.foto.tempFilePath);

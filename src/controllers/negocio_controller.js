@@ -248,6 +248,7 @@ const reportEmployee = async (req, res) => {
         });
         await nuevoReporte.save();
         await Negocios.findByIdAndUpdate(negocioId, { $push: { reportes: nuevoReporte._id } });
+        await Employees.findByIdAndUpdate(empleadoId, { $push: { reportes: nuevoReporte._id } });
         const reporteConEmpleado = await Productividad.findById(nuevoReporte._id)
             .select('-__v -createdAt -updatedAt')
             .populate('empleadoId', 'nombres apellidos email foto')
