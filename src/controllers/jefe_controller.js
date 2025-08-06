@@ -105,11 +105,11 @@ const createNewPassword = async (req,res)=>{
 const loginBoss = async(req,res)=>{
     const {email,password} = req.body;
     if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"});
-    const bossBDD = await Boss.findOne({email}).select("-__v -token -updatedAt -createdAt").populate('companyNames', '_id companyName companyCode');
+    const bossBDD = await Boss.findOne({email}).select("-__v -token -updatedAt -createdAt -fotoID -isDeleted").populate('companyNames', '_id companyName companyCode');
     if(!bossBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
     if(bossBDD?.confirmEmail===false) return res.status(403).json({msg:"Lo sentimos, debe verificar su cuenta"});
     const verificarPassword = await bossBDD.matchPassword(password);
-    if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, el password no es el correcto"});
+    if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, credenciales incorrectas"});
     const {nombres,apellidos,cedula,_id,rol,plan,companyNames,companyCodes,foto, fotoID, status, isDeleted} = bossBDD;
     const token = createTokenJWT(bossBDD._id, bossBDD.rol);
     res.status(200).json({
