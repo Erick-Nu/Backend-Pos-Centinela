@@ -11,6 +11,12 @@ import fs from "fs-extra";
 const createNegocio = async (req, res) => {
     const {id} = req.jefeBDD;
     const { companyName, ruc } = req.body;
+    if (ruc.length !== 13 || !/^\d+$/.test(ruc)) {
+        return res.status(400).json({ msg: "Lo sentimos, el RUC debe tener exactamente 13 dígitos numéricos" });
+    }
+    if (ruc === await Negocios.findOne({ ruc })) {
+        return res.status(400).json({ msg: "Lo sentimos, el negocio ya se encuentra registrado" });
+    }
     if (Object.values(req.body).includes(""))
         return res.status(400).json({ msg: "Lo sentimos, debes de llenar todos los datos" });
     const jefeDBB = await Boss.findById(id);
