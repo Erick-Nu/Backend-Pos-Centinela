@@ -14,7 +14,6 @@ import {
     deleteAdmin,
     listBoss,
     detalleBoss,
-    listDeletedAdmins,
     activateAdmin
 } from '../controllers/admin_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
@@ -29,7 +28,6 @@ router.put('/admins/perfil/update', verifyTokenJWT, updatePerfil);
 router.put('/admins/perfil/update/password', verifyTokenJWT, updatePassword);
 router.get('/admins/list', verifyTokenJWT, listAdmins);
 router.get('/admins/detail/:id', verifyTokenJWT, detalleAdmin);
-router.get('/admins/delete/list', verifyTokenJWT, listDeletedAdmins);
 router.delete('/admins/delete/:id', verifyTokenJWT, deleteAdmin);
 router.put('/admins/activate/:adminId', verifyTokenJWT, activateAdmin);
 router.get('/admins/list/boss', verifyTokenJWT, listBoss);

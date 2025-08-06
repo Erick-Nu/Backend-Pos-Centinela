@@ -175,8 +175,25 @@ const updatePassword = async (req, res) => {
 
 
 const listAdmins = async (req, res) => {
-    const administradores = await Administrador.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
-    res.status(200).json(administradores);
+    const { status } = req.query;  
+    let condition = {};
+    if (status === 'activo') {
+        condition.isDeleted = false;
+    } else if (status === 'eliminado') {
+        condition.isDeleted = true;
+    } else if (status) {
+        return res.status(400).json({ msg: "Parámetro de consulta 'status' inválido. Usa 'activo' o 'eliminado'." });
+    }
+    try {
+        const administradores = await Administrador.find(condition)
+            .select("-password -createdAt -updatedAt -__v -token -isDeleted");
+        if (!administradores || administradores.length === 0)
+            return res.status(404).json({ msg: "No se encontraron administradores" });
+        res.status(200).json(administradores);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error interno del servidor" });
+    }
 };
 
 const detalleAdmin = async (req, res) => {
@@ -203,17 +220,6 @@ const deleteAdmin = async (req, res) => {
     res.status(200).json({ msg: "Administrador eliminado correctamente" });
 };
 
-const listDeletedAdmins = async (req, res) => {
-    try {
-        const administradoresEliminados = await Administrador.find({ isDeleted: true }).select("-__v -token -updatedAt -createdAt");
-        if (!administradoresEliminados || administradoresEliminados.length === 0)
-            return res.status(404).json({ msg: "No se encontraron administradores eliminados" });
-        res.status(200).json({ msg: "Administradores eliminados", administradores: administradoresEliminados });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: "Error interno del servidor" });
-    }
-};
 
 const activateAdmin = async (req, res) => {
     const { id } = req.params;
@@ -279,6 +285,5 @@ export {
     deleteAdmin,
     listBoss,
     detalleBoss,
-    listDeletedAdmins,
     activateAdmin
 }
