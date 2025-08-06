@@ -7,7 +7,7 @@ import {
     createNewPassword,
     loginEmployee,
     perfilEmployee,
-    updateEmployee,
+    updatePerfil,
     updatePassword
 
 } from '../controllers/empleado_controller.js';
@@ -17,7 +17,7 @@ const router = Router();
 
 //Rutas para privadas para empleados
 router.get('/employees/perfil', verifyTokenJWT, perfilEmployee);
-router.put('/employees/update', verifyTokenJWT, updateEmployee);
+router.put('/employees/update', verifyTokenJWT, updatePerfil);
 router.put('/employees/update/password', verifyTokenJWT, updatePassword);
 
 
