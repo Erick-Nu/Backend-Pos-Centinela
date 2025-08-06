@@ -237,7 +237,12 @@ const activateAdmin = async (req, res) => {
 
 
 const listBoss = async (req, res) => {
-    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -companyCodes");
+    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -companyCodes")
+        .populate({
+            path: "companyNames",
+            select: "_id companyName ruc descripcion status emailNegocio",
+            match: { isDeleted: false }
+        });
     res.status(200).json(bosses);
 };
 
