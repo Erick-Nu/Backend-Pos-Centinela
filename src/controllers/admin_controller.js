@@ -175,7 +175,10 @@ const updatePassword = async (req, res) => {
 
 
 const listAdmins = async (req, res) => {
-    const administradores = await Administrador.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    const administradores = await Administrador.find({
+        isDeleted: false,
+        _id: { $ne: "686dbc4a3db0c30454d5fd93" }
+    }).select("-password -createdAt -updatedAt -__v -token -isDeleted");
     res.status(200).json(administradores);
 };
 
