@@ -13,13 +13,14 @@ import {
     detalleAdmin,
     deleteAdmin,
     listBoss,
-    deleteBoss
+    detalleBoss
 } from '../controllers/admin_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
 
 const router = Router();
 
 // Rutas privadas para administradores
+
 router.post('/admins/register', verifyTokenJWT, registroAdmin);
 router.get('/admins/perfil', verifyTokenJWT, perfilAdmin);
 router.put('/admins/perfil/update', verifyTokenJWT, updatePerfil);
@@ -28,7 +29,7 @@ router.get('/admins/list', verifyTokenJWT, listAdmins);
 router.get('/admins/detail/:id', verifyTokenJWT, detalleAdmin);
 router.delete('/admins/delete/:id', verifyTokenJWT, deleteAdmin);
 router.get('/admins/list/boss', verifyTokenJWT, listBoss);
-router.delete('/admins/delete/boss/:id', verifyTokenJWT, deleteBoss);
+router.get('/admins/detail/boss/:id', verifyTokenJWT, detalleBoss);
 
 // Rutas públicas para administradores
 router.get('/admins/confirm/:token', confirmarMail);

@@ -48,7 +48,7 @@ const empleadoSchema = new Schema({
     },
     companyName:{
         type: Schema.Types.ObjectId,
-        ref: 'negocios',
+        ref: 'Negocios',
         required: true
     },
     companyCode:{

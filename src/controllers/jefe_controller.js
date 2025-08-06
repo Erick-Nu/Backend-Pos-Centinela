@@ -196,11 +196,6 @@ const updatePassword = async (req, res) => {
     res.status(200).json({ msg: "Password actualizado correctamente" });
 };
 
-
-
-
-
-
 export {
     consultaCedula,
     registerBoss,

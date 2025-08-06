@@ -199,23 +199,28 @@ const deleteAdmin = async (req, res) => {
     res.status(200).json({ msg: "Administrador eliminado correctamente" });
 };
 
-// Falta de actualizar las propiedades de los jefes para continuar este CRUD
 const listBoss = async (req, res) => {
-    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -companyCodes");
     res.status(200).json(bosses);
 };
 
-const deleteBoss = async (req, res) => {
+const detalleBoss = async (req, res) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
-    const bossBDD = await Boss.findById(id);
+    const bossBDD = await Boss.findById(id)
+        .select("-password -createdAt -updatedAt -__v -token -isDeleted -companyCodes -fotoID -confirmEmail")
+        .populate({
+        path: "companyNames",
+        select: "_id companyName ruc descripcion status emailNegocio",
+        match: { isDeleted: false }
+        });
     if (!bossBDD)
         return res.status(404).json({ msg: "Lo sentimos, no existe el jefe" });
-    bossBDD.isDeleted = true;
-    await bossBDD.save();
-    res.status(200).json({ msg: "Jefe eliminado correctamente" });
-};
+    
+    res.status(200).json(bossBDD);
+}
+
 
 export {
     registroAdmin,
@@ -231,5 +236,5 @@ export {
     detalleAdmin,
     deleteAdmin,
     listBoss,
-    deleteBoss
+    detalleBoss
 }

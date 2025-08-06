@@ -44,12 +44,12 @@ const negocioSchema = new Schema({
     },
     emailBoss: {
         type: Schema.Types.ObjectId,
-        ref: 'jefes',
+        ref: 'Jefes',
         required: true
     },
     empleados: [{
         type: Schema.Types.ObjectId,
-        ref: 'empleados'
+        ref: 'Empleados'
     }],
     status: {
         type: Boolean,
@@ -68,7 +68,11 @@ const negocioSchema = new Schema({
         type: String,
         default: "Administradores/gjypqxqip7qmud3at6wc",
         trim: true
-    }
+    },
+    reportes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Productividad'
+    }]
 }, {
     timestamps: true
 });

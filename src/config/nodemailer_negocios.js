@@ -89,6 +89,114 @@ const sendMailToRegisterNegocio = (userMail, companyName, companyCode, rol) => {
     })
 }
 
+const sendMailToDeleteEmployee = (userMail, companyName) => {
+    let mailOptions = {
+        from: 'admin@centinela.ec',
+        to: userMail,
+        subject: "POS CENTINELA EC - Notificación de Eliminación de Empleado",
+        html: `
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
+
+            <!-- Encabezado con nombre de empresa -->
+            <div style="background-color: #e53e3e; padding: 24px 16px; text-align: center;">
+                <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
+                    POS CENTINELA
+                </h1>
+                <p style="margin: 6px 0 0; color: #e0f7f4; font-size: 14px; font-style: italic;">
+                    Monitorea. Aprende. Mejora.
+                </p>
+            </div>
+
+            <!-- Imagen animada -->
+            <div style="text-align: center; padding: 20px;">
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2c3NDZ4MGcwMXQ5dDc3bTlreTFwcWV1MzFlbzg4ZnJ0YTg5cXF2ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wzJ67MJMk6UMM/giphy.gif" 
+                    alt="Cámara de seguridad animada" 
+                    style="width: 180px; height: auto; border-radius: 8px;" />
+            </div>
+
+            <!-- Contenido principal -->
+            <div style="padding: 0 30px 30px 30px;">
+                <h2 style="color: #1a202c; text-align: center; font-size: 22px;"><span style="color:#e53e3e;">ELIMINACION</span> DEL EMPLEADO</h2>
+
+                <p style="font-size: 16px; color: #4a5568;">Hola,</p>
+
+                <p style="font-size: 16px; color: #4a5568; text-align: justify;">
+                    Lamentablemente, tu acceso como empleado en <span style="color:#e53e3e;"> ${companyName} </span> ha sido eliminado. Si crees que esto es un error o si tienes alguna pregunta, por favor contacta a tu jefe.
+                </p>
+
+            </div>
+
+            <!-- Footer -->
+            <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
+                🤖 El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
+                <em>Monitorea. Aprende. Mejora.</em>
+            </div>
+        </div>
+        `
+    }
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+        }
+    })
+}
+
+const sendMailNotificacion = (userMail, notification) => {
+    let mailOptions = {
+        from: 'admin@centinela.ec',
+        to: userMail,
+        subject: "POS CENTINELA EC - Notificación del Sistema",
+        html: `
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
+
+                <!-- Encabezado con nombre de empresa -->
+                <div style="background-color: #e53e3e; padding: 24px 16px; text-align: center;">
+                    <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 1px;">
+                        POS CENTINELA
+                    </h1>
+                    <p style="margin: 6px 0 0; color: #e0f7f4; font-size: 14px; font-style: italic;">
+                        Monitorea. Aprende. Mejora.
+                    </p>
+                </div>
+
+                <!-- Imagen animada -->
+                <div style="text-align: center; padding: 20px;">
+                    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmE1NXU5OHBnNmw2bmYwMm83dXB0M2Z2b3ZxMGMxMWU0NWtsaG0xeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMRhmgWQhzGbZRe/giphy.gif" 
+                        alt="Cámara de seguridad animada" 
+                        style="width: 250px; height: auto; border-radius: 8px;" />
+                </div>
+
+                <!-- Contenido principal -->
+                <div style="padding: 0 30px 30px 30px;">
+                    <h2 style="color: #1a202c; text-align: center; font-size: 22px;"><span style="color: #e53e3e;"> ¡ NOTIFICACIÓN ! </span></h2>
+
+                    <p style="font-size: 16px; color: #000000; text-align: justify;">
+                        ${notification}
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
+                    El equipo de <strong>POS CENTINELA</strong> te da la bienvenida.<br>
+                    <em>Monitorea. Aprende. Mejora.</em>
+                </div>
+            </div>
+        `
+    }
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+        }
+    });
+}
+
 export {
-    sendMailToRegisterNegocio
+    sendMailToRegisterNegocio,
+    sendMailToDeleteEmployee
 };

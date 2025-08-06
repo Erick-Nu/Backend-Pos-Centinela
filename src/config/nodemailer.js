@@ -418,7 +418,7 @@ const sendMailNewPasswordBoss = async (userMail) => {
     let info = await transporter.sendMail({
         from: 'admin@centinela.ec',
         to: userMail,
-        subject: "POS CENTINELA EC - ¡Recupera tu contraseña y no la pierdas otra vez!",
+        subject: "POS CENTINELA EC - ¡Cambio de contraseña!",
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; max-width: 600px; margin: 40px auto; padding: 0; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
 
