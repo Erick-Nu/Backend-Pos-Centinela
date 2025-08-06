@@ -1,7 +1,7 @@
 import Administrador from "../models/administradores.js"
 import Boss from "../models/jefes.js"
 import { sendMailToRegister, sendMailToRecoveryPassword } from "../config/nodemailer.js"
-import { createTokenJWT } from "../middlewares/JWT.js";
+import { createTokenJWT } from "../middlewares/jwt.js";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary'
 import fs from "fs-extra"
