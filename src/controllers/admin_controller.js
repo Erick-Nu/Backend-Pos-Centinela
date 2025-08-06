@@ -244,13 +244,26 @@ const activateAdmin = async (req, res) => {
 
 
 const listBoss = async (req, res) => {
-    const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -companyCodes")
-        .populate({
-            path: "companyNames",
-            select: "_id companyName ruc descripcion status emailNegocio",
-            match: { isDeleted: false }
-        });
-    res.status(200).json(bosses);
+    const { status } = req.query;  
+    let condition = {};
+    if (status === 'activo') {
+        condition.isDeleted = false;
+    } else if (status === 'eliminado') {
+        condition.isDeleted = true;
+    } else if (status) {
+        return res.status(400).json({ msg: "Parámetro de consulta 'status' inválido. Usa 'activo' o 'eliminado'." });
+    }
+    try {
+        const jefes = await Boss.find(condition)
+            .select("-password -createdAt -updatedAt -__v -token -isDeleted fotoID")
+            .populate("companyNames", "_id companyName ruc descripcion status emailNegocio");
+        if (!jefes || jefes.length === 0)
+            return res.status(404).json({ msg: "No se encontraron jefes" });
+        res.status(200).json(jefes);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error interno del servidor" });
+    }
 };
 
 const detalleBoss = async (req, res) => {
