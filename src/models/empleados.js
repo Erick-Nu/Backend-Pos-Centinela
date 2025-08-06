@@ -1,5 +1,3 @@
-// Librerias
-
 import {Schema, model, modelNames} from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -30,6 +28,16 @@ const empleadoSchema = new Schema({
         type: String,
         require: true
     },
+    foto:{
+        type:String,
+        default:"https://res.cloudinary.com/dmccize09/image/upload/v1752099442/Administradores/gjypqxqip7qmud3at6wc.png",
+        trim: true
+    },
+    fotoID:{
+        type:String,
+        default:"Administradores/gjypqxqip7qmud3at6wc",
+        trim: true
+    },
     status: {
         type: Boolean,
         default: true
@@ -46,16 +54,28 @@ const empleadoSchema = new Schema({
         type: String,
         default: "empleado"
     },
-    companyName:{
+    companyName:[{
         type: Schema.Types.ObjectId,
         ref: 'Negocios',
         required: true
-    },
-    companyCode:{
+    }],
+    companyCode:[{
         type: String,
         default: null,
         trim: true
-    }
+    }],
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    numVentas:{
+        type:Number,
+        default:0
+    },
+    reportes:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Reportes'
+    }]
 }, {
     timestamps: true
 });

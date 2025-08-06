@@ -10,9 +10,11 @@ import {
 
 const router = Router();
 
-router.get('/employees/register', (req, res) => {
-    res.status(200).json({msg:"Bienvenido Empleado, completa tu resgistro para empezar a trabajar"});
-});
+//Rutas para privadas para empleados
+
+
+
+//Rutas publicas para empleados
 router.post('/employees/register', registerEmployee);
 router.get('/employees/confirm/:token', confirmEmail);
 router.post('/employees/password/recover', recuperarPassword);
