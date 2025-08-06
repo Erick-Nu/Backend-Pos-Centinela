@@ -103,17 +103,13 @@ const loginEmployee = async(req,res)=>{
 };
 
 const perfilEmployee = async (req, res) => {
-    const {
-        password,
-        token,
-        confirmEmail,
-        createdAt,
-        updatedAt,
-        __v,
-        isDeleted,
-        ...datosPerfil
-    } = req.empleadoBDD.toObject();
-    res.status(200).json(datosPerfil);
+    const empleado = await Employee.findById(req.empleadoBDD._id)
+        .select("-password -token -confirmEmail -__v -isDeleted -createdAt -updatedAt")
+        .populate("companyNames", "_id companyName companyCode").populate("reportes", "_id negocioId fecha").populate("reportes.negocioId", "_id companyName companyCode");
+    if (!empleado) {
+        return res.status(404).json({ msg: "Empleado no encontrado" });
+    }
+    res.status(200).json(empleado);
 };
 
 const updatePerfil = async (req, res) => {

@@ -72,7 +72,7 @@ const empleadoSchema = new Schema({
     },
     reportes:[{
         type: Schema.Types.ObjectId,
-        ref: 'Reportes'
+        ref: 'Productividad'
     }]
 }, {
     timestamps: true
