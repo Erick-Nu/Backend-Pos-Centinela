@@ -5,13 +5,20 @@ import {
     recuperarPassword,
     comprobarTokenPasword,
     createNewPassword,
-    loginEmployee
+    loginEmployee,
+    perfilEmployee,
+    updateEmployee,
+    updatePassword
+
 } from '../controllers/empleado_controller.js';
+import { verifyTokenJWT } from '../middlewares/JWT.js';
 
 const router = Router();
 
 //Rutas para privadas para empleados
-
+router.get('/employees/perfil', verifyTokenJWT, perfilEmployee);
+router.put('/employees/update', verifyTokenJWT, updateEmployee);
+router.put('/employees/update/password', verifyTokenJWT, updatePassword);
 
 
 //Rutas publicas para empleados
