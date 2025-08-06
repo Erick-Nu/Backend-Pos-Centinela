@@ -138,7 +138,10 @@ const updatePerfil = async (req, res) => {
         empleadoBDD.apellidos = apellidos ?? empleadoBDD.apellidos;
         empleadoBDD.email = email ?? empleadoBDD.email;
         await empleadoBDD.save();
-        const empleadoActualizado = await Employee.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token");
+        const empleadoActualizado = await Employee.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token")
+            .populate("companyNames", "_id companyName")
+            .populate("reportes", "_id negocioId fecha")
+            .populate("reportes.negocioId", "_id companyName companyCode");
         res.status(200).json({
             msg: "Datos actualizados correctamente",
             data: empleadoActualizado
