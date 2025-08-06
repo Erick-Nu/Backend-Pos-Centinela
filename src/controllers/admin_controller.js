@@ -175,10 +175,7 @@ const updatePassword = async (req, res) => {
 
 
 const listAdmins = async (req, res) => {
-    const administradores = await Administrador.find({
-        isDeleted: false,
-        _id: { $ne: "686dbc4a3db0c30454d5fd93" }
-    }).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    const administradores = await Administrador.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted");
     res.status(200).json(administradores);
 };
 
@@ -194,6 +191,8 @@ const detalleAdmin = async (req, res) => {
 
 const deleteAdmin = async (req, res) => {
     const { id } = req.params;
+    if (id === "686dbc4a3db0c30454d5fd93")
+        return res.status(403).json({ msg: "Lo sentimos, no tienes acceso para eliminar este administrador" });
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
     const administradorBDD = await Administrador.findById(id);
