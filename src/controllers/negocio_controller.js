@@ -9,18 +9,22 @@ import fs from "fs-extra";
 
 
 const createNegocio = async (req, res) => {
-    const {id} = req.jefeBDD;
+    const { id } = req.jefeBDD;
     const { companyName, ruc } = req.body;
     if (ruc.length !== 13 || !/^\d+$/.test(ruc)) {
         return res.status(400).json({ msg: "Lo sentimos, el RUC debe tener exactamente 13 dígitos numéricos" });
     }
-    if (ruc === await Negocios.findOne({ ruc })) {
+    const existingNegocio = await Negocios.findOne({ ruc });
+    if (existingNegocio) {
         return res.status(400).json({ msg: "Lo sentimos, el negocio ya se encuentra registrado" });
     }
-    if (Object.values(req.body).includes(""))
+    if (Object.values(req.body).includes("")) {
         return res.status(400).json({ msg: "Lo sentimos, debes de llenar todos los datos" });
+    }
     const jefeDBB = await Boss.findById(id);
-    if (!jefeDBB) return res.status(404).json({ msg: "Jefe no encontrado" });
+    if (!jefeDBB) {
+        return res.status(404).json({ msg: "Jefe no encontrado" });
+    }
     const planDBB = jefeDBB?.plan;
     const numNegocios = jefeDBB?.companyNames?.length || 0;
     const planLimits = {
@@ -29,30 +33,32 @@ const createNegocio = async (req, res) => {
         enterprise: Infinity
     };
     const maxNegocios = planLimits[planDBB];
+
     if (maxNegocios !== undefined && numNegocios >= maxNegocios) {
-    let mensaje = '';
-    switch (planDBB) {
-        case 'starter':
-        mensaje = "Tu plan 'starter' solo permite registrar 1 negocio. Para agregar más, mejora tu suscripción.";
-        break;
-        case 'business':
-        mensaje = "Tu plan 'business' permite registrar hasta 5 negocios. Para continuar, mejora tu plan.";
-        break;
-        case 'enterprise':
-        mensaje = "Tu plan 'enterprise' permite negocios ilimitados. No deberías estar viendo este mensaje.";
-        break;
-        default:
-        mensaje = "Plan no válido. Comunícate con soporte.";
-    }
-    return res.status(401).json({ msg: mensaje });
+        let mensaje = '';
+        switch (planDBB) {
+            case 'starter':
+                mensaje = "Tu plan 'starter' solo permite registrar 1 negocio. Para agregar más, mejora tu suscripción.";
+                break;
+            case 'business':
+                mensaje = "Tu plan 'business' permite registrar hasta 5 negocios. Para continuar, mejora tu plan.";
+                break;
+            case 'enterprise':
+                mensaje = "Tu plan 'enterprise' permite negocios ilimitados. No deberías estar viendo este mensaje.";
+                break;
+            default:
+                mensaje = "Plan no válido. Comunícate con soporte.";
+        }
+        return res.status(401).json({ msg: mensaje });
     }
     const newNegocio = new Negocios({
         ...req.body,
         emailBoss: jefeDBB._id
     });
     const verifyRuc = await newNegocio.verifyRuc(ruc);
-    if (!verifyRuc)
-        return res.status(400).json({ msg: "Lo sentimos, el RUC debe tener exactamente 13 dígitos numéricos" });
+    if (!verifyRuc) {
+        return res.status(400).json({ msg: "Lo sentimos, el RUC no es válido" });
+    }
     let baseCode = await newNegocio.createCode(companyName);
     let finalCode = baseCode;
     let contador = 1;
@@ -60,13 +66,16 @@ const createNegocio = async (req, res) => {
         finalCode = `${baseCode}${contador}`;
         contador++;
     }
+
     newNegocio.companyCode = finalCode;
     jefeDBB.companyCodes.push(finalCode);
     jefeDBB.companyNames.push(newNegocio._id);
     await newNegocio.save();
     await jefeDBB.save();
+
     res.status(200).json({ msg: "Tu negocio ha sido registrado correctamente" });
 };
+
 
 const listNegocios = async (req, res) => {
     try {
