@@ -79,6 +79,8 @@ const loginAdmin = async(req,res)=>{
     const administradorBDD = await Administrador.findOne({ email }).select("-__v -token -updatedAt -createdAt");
     if (!administradorBDD)
         return res.status(404).json({ msg: "Lo sentimos, el usuario no se encuentra registrado" });
+    if (administradorBDD.isDeleted) 
+        return res.status(403).json({ msg: "Lo sentimos, no tienes acceso al sistema" });
     if (administradorBDD.confirmEmail === false)
         return res.status(403).json({ msg: "Lo sentimos, debe verificar su cuenta" });
     const verificarPassword = await administradorBDD.matchPassword(password);
@@ -199,6 +201,39 @@ const deleteAdmin = async (req, res) => {
     res.status(200).json({ msg: "Administrador eliminado correctamente" });
 };
 
+const listDeletedAdmins = async (req, res) => {
+    try {
+        const administradoresEliminados = await Administrador.find({ isDeleted: true }).select("-__v -token -updatedAt -createdAt");
+        if (!administradoresEliminados || administradoresEliminados.length === 0)
+            return res.status(404).json({ msg: "No se encontraron administradores eliminados" });
+        res.status(200).json({ msg: "Administradores eliminados", administradores: administradoresEliminados });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error interno del servidor" });
+    }
+};
+
+const activateAdmin = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    try {
+        const administradorBDD = await Administrador.findById(id);
+        if (!administradorBDD)
+            return res.status(404).json({ msg: "Lo sentimos, no existe el administrador" });
+        if (!administradorBDD.isDeleted)
+            return res.status(400).json({ msg: "El administrador ya está activo" });
+        administradorBDD.isDeleted = false;
+        await administradorBDD.save();
+        res.status(200).json({ msg: "Administrador activado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error interno del servidor" });
+    }
+};
+
+
+
 const listBoss = async (req, res) => {
     const bosses = await Boss.find({isDeleted: false}).select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -companyCodes");
     res.status(200).json(bosses);
@@ -236,5 +271,7 @@ export {
     detalleAdmin,
     deleteAdmin,
     listBoss,
-    detalleBoss
+    detalleBoss,
+    listDeletedAdmins,
+    activateAdmin
 }
