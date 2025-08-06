@@ -54,12 +54,12 @@ const empleadoSchema = new Schema({
         type: String,
         default: "empleado"
     },
-    companyName:[{
+    companyNames:[{
         type: Schema.Types.ObjectId,
         ref: 'Negocios',
         required: true
     }],
-    companyCode:[{
+    companyCodes:[{
         type: String,
         default: null,
         trim: true

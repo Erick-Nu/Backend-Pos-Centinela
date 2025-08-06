@@ -82,12 +82,12 @@ const createNewPassword = async (req, res) => {
 const loginEmployee = async(req,res)=>{
     const {email,password} = req.body;
     if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"});
-    const employeeBDD = await Employee.findOne({email}).select("-status -__v -token -updatedAt -createdAt -isDeleted");
+    const employeeBDD = await Employee.findOne({email}).select("-status -__v -token -updatedAt -createdAt -isDeleted").populate('companyNames', '_id companyName companyCode');
     if(employeeBDD?.confirmEmail===false) return res.status(403).json({msg:"Lo sentimos, debe verificar su cuenta"});
     if(!employeeBDD) return res.status(404).json({msg:"Lo sentimos, el usuario no se encuentra registrado"});
     const verificarPassword = await employeeBDD.matchPassword(password);
     if(!verificarPassword) return res.status(401).json({msg:"Lo sentimos, el password no es el correcto"});
-    const {nombres,apellidos,cedula,_id,rol, companyName, companyCode} = employeeBDD;
+    const {nombres,apellidos,cedula,_id,rol, companyNames, companyCodes} = employeeBDD;
     const token = createTokenJWT(employeeBDD._id, employeeBDD.rol);
     res.status(200).json({
         token,
@@ -95,8 +95,8 @@ const loginEmployee = async(req,res)=>{
         apellidos,
         cedula,
         email:employeeBDD.email,
-        companyName,
-        companyCode,
+        companyNames,
+        companyCodes,
         rol,
         _id,
     });
