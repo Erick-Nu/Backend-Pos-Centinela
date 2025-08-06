@@ -186,7 +186,7 @@ const listAdmins = async (req, res) => {
     }
     try {
         const administradores = await Administrador.find(condition)
-            .select("-password -createdAt -updatedAt -__v -token -isDeleted fotoID");
+            .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID");
         if (!administradores || administradores.length === 0)
             return res.status(404).json({ msg: "No se encontraron administradores" });
         res.status(200).json(administradores);
@@ -255,7 +255,7 @@ const listBoss = async (req, res) => {
     }
     try {
         const jefes = await Boss.find(condition)
-            .select("-password -createdAt -updatedAt -__v -token -isDeleted fotoID")
+            .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID")
             .populate("companyNames", "_id companyName ruc descripcion status emailNegocio");
         if (!jefes || jefes.length === 0)
             return res.status(404).json({ msg: "No se encontraron jefes" });
