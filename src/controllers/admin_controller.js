@@ -245,12 +245,7 @@ const activateAdmin = async (req, res) => {
 
 const listBoss = async (req, res) => {
     const jefes = await Boss.find({ isDeleted: false })
-        .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID")
-        .populate({
-            path: "companyNames",
-            select: "_id companyName ruc descripcion status emailNegocio",
-            match: { isDeleted: false }
-        });
+        .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID");
     if (!jefes || jefes.length === 0)
         return res.status(404).json({ msg: "No se encontraron jefes" });
     res.status(200).json(jefes);
