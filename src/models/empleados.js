@@ -56,13 +56,11 @@ const empleadoSchema = new Schema({
     },
     companyNames:[{
         type: Schema.Types.ObjectId,
-        ref: 'Negocios',
-        required: true
+        ref: 'Negocios'
     }],
     companyCodes:[{
         type: String,
-        default: null,
-        trim: true
+        default: null
     }],
     isDeleted: {
         type: Boolean,
