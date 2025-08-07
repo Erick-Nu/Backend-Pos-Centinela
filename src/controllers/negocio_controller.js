@@ -188,7 +188,8 @@ const listEmployees = async (req, res) => {
     }
     const negocioBDD = await Negocios.findById(negocioId)
         .select("-__v -createdAt -updatedAt -logoID -isDeleted")
-        .populate("empleados", "nombres apellidos email foto status");
+        .populate("empleados", "_id nombres apellidos email foto status")
+        .match({isDeleted: false});
     if (!negocioBDD) {
         return res.status(404).json({ msg: "Lo sentimos, no existe el negocio" });
     }
@@ -201,15 +202,16 @@ const listEmployees = async (req, res) => {
 
 const deleteEmployee = async (req, res) => {
     const { id } = req.params;
-    if (!id) {
-        return res.status(400).json({ msg: "Lo sentimos, debes enviar el ID del empleado" });
-    }
-    const negocioDBB = await Negocios.findOne({ emailBoss: req.jefeBDD._id });
-    if (!negocioDBB) {
-        return res.status(404).json({ msg: "Lo sentimos, el negocio no se encuentra registrado" });
-    }
-    await sendMailToDeleteEmployee(negocioDBB.emailNegocio, negocioDBB.companyName);
-    res.status(200).json({ msg: "Tu empleado fue eliminado del negocio correctamente" });
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    const empleadoBDD = await Employees.findById(id);
+    if (!empleadoBDD)
+        return res.status(404).json({ msg: "Lo sentimos, no existe el empleado" });
+    if (empleadoBDD.isDeleted)
+        return res.status(400).json({ msg: "El empleado ya está eliminado" });
+    empleadoBDD.isDeleted = true;
+    await empleadoBDD.save();
+    res.status(200).json({ msg: "Empleado eliminado correctamente" });
 };
 
 const deleteNegocio = async (req, res) => {
