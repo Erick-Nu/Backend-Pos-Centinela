@@ -22,8 +22,8 @@ router.post('/negocios/add-employee', verifyTokenJWT, addEmployee);
 router.get('/negocios/detail/:negocioId', verifyTokenJWT, detalleNegocio);
 router.put('/negocios/update/:negocioId', verifyTokenJWT, updateNegocio);
 router.delete('/negocios/delete/:negocioId', verifyTokenJWT, deleteNegocio);
-router.delete('/negocios/delete-employee/:employeeId', verifyTokenJWT, deleteEmployee);
-router.get('/negocios/report/employee/:empleadoId', verifyTokenJWT, listEmployeesReport);
+router.delete('/negocios/delete-employee/:id', verifyTokenJWT, deleteEmployee);
+router.get('/negocios/report/employee/:id', verifyTokenJWT, listEmployeesReport);
 router.get('/negocios/report/:negocioId', verifyTokenJWT, listReport);
 router.post('/negocios/report/:empleadoId/:negocioId', verifyTokenJWT, reportEmployee);
 
