@@ -96,24 +96,6 @@ app.get('/', (req, res) => {
                 </a>
                 </div>
 
-            <div style="text-align: center; margin-top: 24px;">
-                <a href="http://localhost:3000/api/auth/google"  
-                    target="_blank"
-                    style="background-color: #000000ff; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
-                    Registro with Google
-                </a>
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 24px;">
-                <a href="http://localhost:3000/api/auth/google"  
-                    target="_blank"
-                    style="background-color: #000000ff; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
-                    Inicio de Sesión with Google
-                </a>
-                </div>
-            </div>
-
             <!-- Pie -->
             <div style="border-top: 1px solid #e2e8f0; background-color: #f9f9f9; padding: 20px; text-align: center; color: #a0aec0; font-size: 13px;">
                 🤖 El equipo de <strong>POS CENTINELA</strong> está feliz de tenerte con nosotros.<br>
