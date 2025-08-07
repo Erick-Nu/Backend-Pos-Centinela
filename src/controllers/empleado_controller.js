@@ -35,7 +35,7 @@ const confirmEmail = async (req, res) => {
     const token = req.params.token;
     const tokenBDD = await Employee.findOne({token});
     if (!tokenBDD?.token)
-        return res.status(404).json({msg:"La cuenta ya ha sido confirmada"});
+        return res.status(404).json({msg:"La cuenta ya ha sido confirmada "});
     tokenBDD.token = null;
     tokenBDD.confirmEmail = true;
     await tokenBDD.save();
