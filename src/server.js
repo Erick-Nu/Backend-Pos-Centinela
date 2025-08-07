@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
                 🚀 API de monitoreo activa y funcionando correctamente.
                 </p>
 
-                <div style="text-align: center; margin-top: 24px;">
+                <div style="text-align: center; margin-top: 35px;">
                 <a href="https://github.com/Erick-Nu/Backend-Pos-Centinela"  
                     target="_blank"
                     style="background-color: #1abc9c; color: white; padding: 14px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; display: inline-block;">
