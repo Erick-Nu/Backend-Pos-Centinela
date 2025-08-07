@@ -21,7 +21,7 @@ const registerEmployee = async (req, res) => {
         return res.status(400).json({msg:"Lo sentimos, el codigo del negocio no existe"});
     const newEmployee = new Employee(req.body);
     newEmployee.password = await newEmployee.encrypPassword(password);
-    newEmployee.companyName = verificarCodeBDD._id;
+    newEmployee.companyNames = verificarCodeBDD._id;
     const token =  await newEmployee.createToken();
     const rol = newEmployee.rol;
     await sendMailToNewEmployee(email, token, rol);
