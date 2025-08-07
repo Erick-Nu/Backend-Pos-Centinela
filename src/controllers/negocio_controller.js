@@ -182,11 +182,11 @@ const addEmployee = async (req, res) => {
 };
 
 const listEmployees = async (req, res) => {
-    const { negocioId } = req.params;
-    if (!negocioId) {
+    const { id } = req.params;
+    if (!id) {
         return res.status(400).json({ msg: "Lo sentimos, debes enviar el ID del negocio" });
     }
-    const negocioBDD = await Negocios.findById(negocioId)
+    const negocioBDD = await Negocios.findById(id)
         .select("-__v -createdAt -updatedAt -logoID -isDeleted")
         .populate("empleados", "_id nombres apellidos email foto status")
         .match({isDeleted: false});
