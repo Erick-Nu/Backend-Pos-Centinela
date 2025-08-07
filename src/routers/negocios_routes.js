@@ -8,7 +8,8 @@ import {
     detalleNegocio,
     reportEmployee,
     listReport,
-    listEmployeesReport
+    listEmployeesReport,
+    updateNegocio
 } from '../controllers/negocio_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
 
@@ -19,6 +20,7 @@ router.post('/negocios/create', verifyTokenJWT, createNegocio);
 router.get('/negocios/list', verifyTokenJWT, listNegocios);
 router.post('/negocios/add-employee', verifyTokenJWT, addEmployee); 
 router.get('/negocios/detail/:negocioId', verifyTokenJWT, detalleNegocio);
+router.put('/negocios/update/:negocioId', verifyTokenJWT, updateNegocio);
 router.delete('/negocios/delete/:negocioId', verifyTokenJWT, deleteNegocio);
 router.delete('/negocios/delete-employee/:employeeId', verifyTokenJWT, deleteEmployee);
 router.get('/negocios/report/employee/:empleadoId', verifyTokenJWT, listEmployeesReport);
