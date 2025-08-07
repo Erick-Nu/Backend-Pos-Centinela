@@ -19,7 +19,7 @@ const router = Router();
 // Rutas privadas para negocios
 router.post('/negocios/create', verifyTokenJWT, createNegocio);
 router.get('/negocios/list', verifyTokenJWT, listNegocios);
-router.get('/negocios/list/employees', verifyTokenJWT, listEmployees);
+router.get('/negocios/list/employees/:id', verifyTokenJWT, listEmployees);
 router.post('/negocios/add-employee', verifyTokenJWT, addEmployee); 
 router.get('/negocios/detail/:negocioId', verifyTokenJWT, detalleNegocio);
 router.put('/negocios/update/:negocioId', verifyTokenJWT, updateNegocio);
