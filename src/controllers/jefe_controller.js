@@ -134,7 +134,7 @@ const loginBoss = async(req,res)=>{
 
 const perfilBoss = async (req, res) => {
     const jefe = await Boss.findById(req.jefeBDD._id)
-        .select("-password -token -confirmEmail -__v -isDeleted -createdAt -updatedAt")
+        .select("-password -token -confirmEmail -__v -isDeleted -createdAt -updatedAt -fotoID")
         .populate("companyNames", "_id companyName companyCode");
     if (!jefe) {
         return res.status(404).json({ msg: "Jefe no encontrado" });
@@ -202,7 +202,7 @@ const updatePassword = async (req, res) => {
 const stripe = new Stripe(`${process.env.STRIPE_PRIVATE_KEY}`);
 const pagoPlan = async (req, res) => {
     const { id } = req.jefeBDD;
-    const { paymentMethodId, treatmentId, cantidad, motivo } = req.body;
+    const { paymentMethodId, cantidad, motivo } = req.body;
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
     if (Object.values(req.body).includes("") || !cantidad || !motivo)

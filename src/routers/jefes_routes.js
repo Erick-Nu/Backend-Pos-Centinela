@@ -20,7 +20,8 @@ const router = Router();
 router.get('/boss/perfil', verifyTokenJWT, perfilBoss);
 router.put('/boss/perfil/update', verifyTokenJWT, updatePerfil);
 router.put('/boss/perfil/update/password', verifyTokenJWT, updatePassword);
-router.post('/boss/pago/plan', verifyTokenJWT, pagoPlan);
+// Revisar
+router.put('/boss/pago/plan', verifyTokenJWT, pagoPlan);
 
 
 // Rutas públicas para jefes
