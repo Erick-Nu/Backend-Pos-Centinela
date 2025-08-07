@@ -168,6 +168,10 @@ const updateNegocio = async (req, res) => {
 
 const addEmployee = async (req, res) => {
     const {emailEmpleado} = req.body;
+    const empleadoRegistrado = await Employees.findOne({email: emailEmpleado});
+    if (empleadoRegistrado) {
+        return res.status(400).json({msg:"Lo sentimos, el empleado ya se encuentra registrado"});
+    }
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todo los datos"});
     const negocioDBB = await Negocios.findOne({emailBoss: req.jefeBDD._id});
