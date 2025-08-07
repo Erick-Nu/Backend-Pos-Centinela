@@ -4,6 +4,8 @@ import { createTokenJWT } from "../middlewares/JWT.js";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary';
 import fs from "fs-extra";
+import { Stripe } from "stripe"
+
 
 const consultaCedula = async (req, res) => {
     const { cedula } = req.body;
@@ -196,6 +198,56 @@ const updatePassword = async (req, res) => {
     res.status(200).json({ msg: "Password actualizado correctamente" });
 };
 
+// Metodo para el pago del plan
+const stripe = new Stripe(`${process.env.STRIPE_PRIVATE_KEY}`);
+const pagoPlan = async (req, res) => {
+    const { id } = req.jefeBDD;
+    const { paymentMethodId, treatmentId, cantidad, motivo } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
+    if (Object.values(req.body).includes("") || !cantidad || !motivo)
+        return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos correctamente" });
+    if (isNaN(cantidad) || cantidad <= 0)
+        return res.status(400).json({ msg: "La cantidad debe ser un número positivo" });
+    try {
+        const jefeBDD = await Boss.findById(id);
+        if (!jefeBDD)
+            return res.status(404).json({ msg: "Lo sentimos, no existe el jefe" });
+        if (jefeBDD.isDeleted)
+            return res.status(400).json({ msg: "Este jefe ha sido eliminado y no puede realizar compras" });
+        if (!paymentMethodId)
+            return res.status(400).json({ msg: "paymentMethodId no proporcionado" });
+        let [cliente] = (await stripe.customers.list({ email: jefeBDD.email, limit: 1 })).data || [];
+        if (!cliente) {
+            cliente = await stripe.customers.create({ name: jefeBDD.nombres, email: jefeBDD.email });
+        }
+        // Crear la intención de pago en Stripe
+        const payment = await stripe.paymentIntents.create({
+            amount: cantidad,
+            currency: "USD",
+            description: motivo,
+            payment_method: paymentMethodId,
+            confirm: true,
+            customer: cliente.id,
+            automatic_payment_methods: {
+                enabled: true,
+                allow_redirects: "never"
+            }
+        });
+        if (payment.status === "succeeded") {
+            const nuevoPlan = jefeBDD.plan === 'starter' ? 'business' : jefeBDD.plan === 'business' ? 'enterprise' : jefeBDD.plan;
+            await Boss.findByIdAndUpdate(id, { plan: nuevoPlan });
+            return res.status(200).json({ msg: "El pago se realizó exitosamente y el plan ha sido actualizado" });
+        } else {
+            return res.status(400).json({ msg: "El pago no fue exitoso. Intenta nuevamente" });
+        }
+    } catch (error) {
+        console.error(error);  
+        return res.status(500).json({ msg: "Error al intentar pagar el tratamiento", error: error.message });
+    }
+};
+
+
 export {
     consultaCedula,
     registerBoss,
@@ -206,5 +258,6 @@ export {
     loginBoss,
     perfilBoss,
     updatePerfil,
-    updatePassword
+    updatePassword,
+    pagoPlan
 };

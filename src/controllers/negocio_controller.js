@@ -186,17 +186,25 @@ const listEmployees = async (req, res) => {
     if (!id) {
         return res.status(400).json({ msg: "Lo sentimos, debes enviar el ID del negocio" });
     }
-    const negocioBDD = await Negocios.findById(id)
-        .select("-__v -createdAt -updatedAt -logoID -isDeleted")
-        .populate("empleados", "_id nombres apellidos email foto status")
-        .match({isDeleted: false});
-    if (!negocioBDD) {
-        return res.status(404).json({ msg: "Lo sentimos, no existe el negocio" });
+    try {
+        const negocioBDD = await Negocios.findById(id)
+            .select("-__v -createdAt -updatedAt -logoID -isDeleted")
+            .populate({
+                path: "empleados",
+                select: "_id nombres apellidos email foto status",
+                match: { isDeleted: false }
+            });
+        if (!negocioBDD) {
+            return res.status(404).json({ msg: "Lo sentimos, no existe el negocio" });
+        }
+        if (!negocioBDD.empleados || negocioBDD.empleados.length === 0) {
+            return res.status(404).json({ msg: "No hay empleados registrados en este negocio" });
+        }
+        return res.status(200).json(negocioBDD.empleados);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: "Error interno del servidor" });
     }
-    if (!negocioBDD.empleados || negocioBDD.empleados.length === 0) {
-        return res.status(404).json({ msg: "No hay empleados registrados en este negocio" });
-    }
-    return res.status(200).json(negocioBDD.empleados);
 };
 
 
