@@ -112,6 +112,7 @@ const perfilAdmin = async (req, res) => {
         updatedAt,
         __v,
         isDeleted,
+        fotoID,
         ...datosPerfil
     } = req.administradorBDD.toObject();
     res.status(200).json(datosPerfil);
@@ -143,7 +144,7 @@ const updatePerfil = async (req, res) => {
         administradorBDD.apellidos = apellidos ?? administradorBDD.apellidos;
         administradorBDD.email = email ?? administradorBDD.email;
         await administradorBDD.save();
-        const administradorActualizado = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token");
+        const administradorActualizado = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token -fotoID -confirmEmail");
         res.status(200).json({
             msg: "Datos actualizados correctamente",
             data: administradorActualizado
@@ -186,7 +187,7 @@ const listAdmins = async (req, res) => {
     }
     try {
         const administradores = await Administrador.find(condition)
-            .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID");
+            .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -adminCode -email -cedula");
         if (!administradores || administradores.length === 0)
             return res.status(404).json({ msg: "No se encontraron administradores" });
         res.status(200).json(administradores);
@@ -200,7 +201,7 @@ const detalleAdmin = async (req, res) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).json({ msg: "Lo sentimos, debe ser un id válido" });
-    const administradorBDD = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -token -isDeleted");
+    const administradorBDD = await Administrador.findById(id).select("-password -createdAt -updatedAt -__v -token -fotoID -confirmEmail");
     if (!administradorBDD)
         return res.status(404).json({ msg: "Lo sentimos, no existe el administrador" });
     res.status(200).json(administradorBDD);
@@ -245,7 +246,7 @@ const activateAdmin = async (req, res) => {
 
 const listBoss = async (req, res) => {
     const jefes = await Boss.find({ isDeleted: false })
-        .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID");
+        .select("-password -createdAt -updatedAt -__v -token -isDeleted -fotoID -confirmEmail -companyCodes -companyNames");
     if (!jefes || jefes.length === 0)
         return res.status(404).json({ msg: "No se encontraron jefes" });
     res.status(200).json(jefes);
