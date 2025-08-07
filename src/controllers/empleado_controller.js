@@ -22,6 +22,7 @@ const registerEmployee = async (req, res) => {
     const newEmployee = new Employee(req.body);
     newEmployee.password = await newEmployee.encrypPassword(password);
     newEmployee.companyNames = verificarCodeBDD._id;
+    newEmployee.companyCodes = verificarCodeBDD.companyCode;
     const token =  await newEmployee.createToken();
     const rol = newEmployee.rol;
     await sendMailToNewEmployee(email, token, rol);
@@ -29,7 +30,7 @@ const registerEmployee = async (req, res) => {
     verificarCodeBDD.empleados.push(newEmployee._id);
     await verificarCodeBDD.save();
     res.status(200).json({msg: "Revisa tu correo electrónico para confirmar tu cuenta"});
-}
+};
 
 const confirmEmail = async (req, res) => {
     const token = req.params.token;
