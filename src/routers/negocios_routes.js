@@ -9,7 +9,8 @@ import {
     reportEmployee,
     listReport,
     listEmployeesReport,
-    updateNegocio
+    updateNegocio,
+    listEmployees
 } from '../controllers/negocio_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
 
@@ -18,6 +19,7 @@ const router = Router();
 // Rutas privadas para negocios
 router.post('/negocios/create', verifyTokenJWT, createNegocio);
 router.get('/negocios/list', verifyTokenJWT, listNegocios);
+router.get('/negocios/list/employees', verifyTokenJWT, listEmployees);
 router.post('/negocios/add-employee', verifyTokenJWT, addEmployee); 
 router.get('/negocios/detail/:negocioId', verifyTokenJWT, detalleNegocio);
 router.put('/negocios/update/:negocioId', verifyTokenJWT, updateNegocio);
