@@ -239,7 +239,7 @@ const pagoPlan = async (req, res) => {
 };
 
 const verificarPago = async (req, res) => {
-    const body = await req.text();
+    const body = await req.body;
     let event;
     try {
         event = stripe.webhooks.constructEvent(body, req.headers['stripe-signature'], process.env.ENDPOINT_SECRET);
