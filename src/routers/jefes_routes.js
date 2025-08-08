@@ -36,5 +36,5 @@ router.get('/boss/password/verify/:token', comprobarTokenPasword);
 router.post('/boss/password/reset/:token', createNewPassword);
 router.post('/boss/login', loginBoss);
 router.post('/boss/plans/pago/verificar', verificarPago);
-    
+
 export default router;

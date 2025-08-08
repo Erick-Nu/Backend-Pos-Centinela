@@ -239,9 +239,11 @@ const pagoPlan = async (req, res) => {
 };
 
 const verificarPago = async (req, res) => {
+    const body = await req.text();
+    let event;
     try {
-        console.log("Webhook recibido");
-        return res.status(200).json({ msg: "Verificación de pago exitosa" });
+        event = stripe.webhooks.constructEvent(body, req.headers['stripe-signature'], process.env.ENDPOINT_SECRET);
+        return res.status(200).json({ json: { event }, msg: "Verificación de pago exitosa" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: "Error al verificar el pago", error: error.message });
