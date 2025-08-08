@@ -22,8 +22,8 @@ router.get('/boss/perfil', verifyTokenJWT, perfilBoss);
 router.put('/boss/perfil/update', verifyTokenJWT, updatePerfil);
 router.put('/boss/perfil/update/password', verifyTokenJWT, updatePassword);
 // Revisar
-router.get('/boss/plans', listPlans);
-router.post('/boss/plans/pago', pagoPlan);
+router.get('/boss/plans', verifyTokenJWT, listPlans);
+router.post('/boss/plans/pago', verifyTokenJWT, pagoPlan);
 
 
 // Rutas públicas para jefes
