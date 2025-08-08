@@ -238,8 +238,9 @@ const pagoPlan = async (req, res) => {
     }
 };
 
-const verificarPago = async (req, res) => { 
+const verificarPago = async (req, res) => {
     try {
+        console.log("Webhook recibido");
         return res.status(200).json({ msg: "Verificación de pago exitosa" });
     } catch (error) {
         console.error(error);
