@@ -236,10 +236,16 @@ const pagoPlan = async (req, res) => {
         console.error(error);  
         return res.status(500).json({ msg: "Error al intentar pagar", error: error.message });
     }
-}
+};
 
-
-
+const verificarPago = async (req, res) => { 
+    try {
+        return res.status(200).json({ msg: "Verificación de pago exitosa" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: "Error al verificar el pago", error: error.message });
+    }
+};
 
 export {
     consultaCedula,
@@ -253,5 +259,6 @@ export {
     updatePerfil,
     updatePassword,
     listPlans,
-    pagoPlan
+    pagoPlan,
+    verificarPago
 };
