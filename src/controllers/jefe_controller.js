@@ -219,12 +219,25 @@ const pagoPlan = async (req, res) => {
     try {
         const { planId } = req.body;
         if (!planId) return res.status(400).json({ msg: "Plan ID es requerido" });
-        return res.status(400).json(planId);
+        const session = await stripe.checkout.sessions.create({
+            mode: 'subscription',
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price: planId,
+                    quantity: 1
+                }
+            ],
+            success_url: `http://localhost:3000/api/boss/plans`,
+            cancel_url: `http://localhost:3000/api/boss/plans`
+        });
+        return res.status(200).json({ url: session.url });
     } catch (error) {
         console.error(error);  
         return res.status(500).json({ msg: "Error al intentar pagar", error: error.message });
     }
 }
+
 
 
 
