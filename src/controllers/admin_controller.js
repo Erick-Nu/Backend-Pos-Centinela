@@ -267,7 +267,7 @@ const detalleBoss = async (req, res) => {
         return res.status(404).json({ msg: "Lo sentimos, no existe el jefe" });
     
     res.status(200).json(bossBDD);
-}
+};
 
 
 export {

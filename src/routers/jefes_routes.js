@@ -10,6 +10,7 @@ import {
     perfilBoss,
     updatePerfil,
     updatePassword,
+    listPlans,
     pagoPlan
 } from '../controllers/jefe_controller.js';
 import { verifyTokenJWT } from '../middlewares/JWT.js';
@@ -21,7 +22,8 @@ router.get('/boss/perfil', verifyTokenJWT, perfilBoss);
 router.put('/boss/perfil/update', verifyTokenJWT, updatePerfil);
 router.put('/boss/perfil/update/password', verifyTokenJWT, updatePassword);
 // Revisar
-router.put('/boss/pago/plan', verifyTokenJWT, pagoPlan);
+router.get('/boss/plans', listPlans);
+router.post('/boss/plans/pago', pagoPlan);
 
 
 // Rutas públicas para jefes
