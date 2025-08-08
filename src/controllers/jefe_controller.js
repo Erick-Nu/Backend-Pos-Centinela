@@ -240,9 +240,11 @@ const pagoPlan = async (req, res) => {
 
 const verificarPago = async (req, res) => {
     const body = await req.body;
+    const sig = req.headers['stripe-signature'];
+    const webhookSecret = process.env.ENDPOINT_SECRET;
     let event;
     try {
-        event = stripe.webhooks.constructEvent(body, req.headers['stripe-signature'], process.env.ENDPOINT_SECRET);
+        event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
         return res.status(200).json({ json: { event }, msg: "Verificación de pago exitosa" });
     } catch (error) {
         console.error(error);
