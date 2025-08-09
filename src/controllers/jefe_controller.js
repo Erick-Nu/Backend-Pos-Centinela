@@ -241,7 +241,7 @@ const pagoPlan = async (req, res) => {
 const verificarPago = async (req, res) => {
     const body = await req.body;
     const sig = req.headers['stripe-signature'];
-    const webhookSecret = process.env.ENDPOINT_SECRET;
+    const webhookSecret = "whsec_4IS6ac472dNrK1xbE7v9SHD4F04rZ9iW";
     let event;
     try {
         event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
