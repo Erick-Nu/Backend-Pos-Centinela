@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import express from 'express';
 import {
     consultaCedula,
     registerBoss,
@@ -35,6 +36,5 @@ router.post('/boss/password/recover', recoverPassword);
 router.get('/boss/password/verify/:token', comprobarTokenPasword);
 router.post('/boss/password/reset/:token', createNewPassword);
 router.post('/boss/login', loginBoss);
-router.post('/boss/plans/pago/verificar', verificarPago);
-
+router.post('/boss/plans/pago/verificar', express.raw({ type: 'application/json' }), verificarPago);
 export default router;

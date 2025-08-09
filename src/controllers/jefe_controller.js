@@ -229,7 +229,7 @@ const pagoPlan = async (req, res) => {
                 }
             ],
             success_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan/result`,
-            cancel_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan`
+            cancel_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan/result`
         });
         return res.status(200).json({ url: session.url });
     } catch (error) {
@@ -239,18 +239,12 @@ const pagoPlan = async (req, res) => {
 };
 
 const verificarPago = async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    const webhookSecret = "whsec_4IS6ac472dNrK1xbE7v9SHD4F04rZ9iW";
+    let event;
     try {
-        const body = await req.text();
-        const sig = req.headers["stripe-signature"];
-        const webhookSecret = "whsec_4IS6ac472dNrK1xbE7v9SHD4F04rZ9iW";
-        let event;
-        try {
-            event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-        } catch (err) {
-            console.error(`Webhook signature verification failed: ${err.message}`);
-            return res.status(400).json({ msg: "Webhook error: invalid signature" });
-        }
-        return res.status(200).json({ msg: "Verificación de pago exitosa" });
+        event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+        return res.status(200).json({ json: { event }, msg: "Verificación de pago exitosa" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: "Error al verificar el pago", error: error.message });
