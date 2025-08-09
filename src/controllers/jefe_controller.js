@@ -228,8 +228,8 @@ const pagoPlan = async (req, res) => {
                     quantity: 1
                 }
             ],
-            success_url: `http://localhost:3000/api/boss/plans`,
-            cancel_url: `http://localhost:3000/api/boss/plans`
+            success_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan/result`,
+            cancel_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan/result`
         });
         return res.status(200).json({ url: session.url });
     } catch (error) {
