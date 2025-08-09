@@ -37,7 +37,7 @@ const authGoogle = async (accessToken, refreshToken, profile, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: `${process.env.URL_FRONTEND}/dashboard/admin`,
+  callbackURL: `${process.env.URL_BACKEND_PRODUCTION}/api/auth/google/callback`,
 }, authGoogle));
 
 passport.serializeUser((user, done) => done(null, user));

@@ -99,9 +99,18 @@ app.get('/', (req, res) => {
                             <a href="https://github.com/Erick-Nu/Backend-Pos-Centinela" 
                                 target="_blank"
                                 style="background-color: #1abc9c; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: background 0.3s ease;">
-                                🌐 Ver Proyecto en GitHub
+                                    Ver Proyecto en GitHub
                             </a>
                         </div>
+
+                        <div style="text-align: center; margin-top: 40px;">
+                            <a href="https://pos-centinela-backend.onrender.com/api/auth/google" 
+                                target="_blank"
+                                style="background-color: #000000ff; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: background 0.3s ease;">
+                                    Google Auth
+                            </a>
+                        </div>
+
                     </div>
 
                     <!-- Pie -->
