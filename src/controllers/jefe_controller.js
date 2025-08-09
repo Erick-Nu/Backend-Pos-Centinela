@@ -240,16 +240,15 @@ const pagoPlan = async (req, res) => {
 
 const verificarPago = (req, res) => {
     let body = '';
-
     req.on('data', chunk => {
         body += chunk;  // Concatenamos los fragmentos del cuerpo
+        console.log('Chunk recibido:', chunk);  // Imprimir cada fragmento
     });
-
     req.on('end', () => {
+        console.log('Cuerpo completo recibido:', body);  // Imprimir el cuerpo completo
         const sig = req.headers["stripe-signature"];
         const webhookSecret = "whsec_4IS6ac472dNrK1xbE7v9SHD4F04rZ9iW";
         let event;
-
         try {
             // Verificamos la firma del webhook con el cuerpo recibido
             event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
@@ -260,6 +259,7 @@ const verificarPago = (req, res) => {
         }
     });
 };
+
 
 export {
     consultaCedula,
