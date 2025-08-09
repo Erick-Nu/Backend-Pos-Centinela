@@ -24,8 +24,7 @@ app.set('port',process.env.PORT || 3000)
 app.use(cors())
 
 
-// Rutas para jefes
-app.use('/api', routerJefes);
+
 
 // Middlewares 
 // Este middleware permite que el servidor pueda recibir datos en formato JSON
@@ -124,7 +123,8 @@ app.use('/api',routerAdministradores)
 // Rutas para empleados
 app.use('/api', routerEmpleados);
 
-
+// Rutas para jefes
+app.use('/api', routerJefes);
 
 // Rutas para negocios
 app.use('/api', routerNegocios);
