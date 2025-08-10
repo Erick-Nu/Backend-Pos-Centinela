@@ -219,6 +219,10 @@ const pagoPlan = async (req, res) => {
     const { id } = req.jefeBDD;
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).json({ msg: `Lo sentimos, debe ser un id válido` });
+    const jefeBDD = await Boss.findById(id);
+    if (!jefeBDD)
+        return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
+    const { jefeId } = jefeBDD._id.toString();
     try {
         const { planId } = req.body;
         if (!planId) return res.status(400).json({ msg: "Plan ID es requerido" });
@@ -231,6 +235,11 @@ const pagoPlan = async (req, res) => {
                     quantity: 1
                 }
             ],
+            metadata: {
+                jefe: jefeId,
+                email: jefeBDD.email,
+                plan: planId
+            },
             success_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan/result`,
             cancel_url: `${process.env.URL_FRONTEND}/dashboard/upgrade-plan/result`
         });
@@ -247,11 +256,27 @@ const verificarPago = async (req, res) => {
     let event;
     try {
         event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+        switch(event.type) {
+        case 'checkout.session.completed':
+            const checkoutSessionCompleted = event.data.object;
+            console.log("Pago completado");
+            console.log(checkoutSessionCompleted);
+            break;
+        case 'checkout.session.async_payment_succeeded':
+            console.log("Pago completado (pago asincrónico)");
+            break;
+        case 'checkout.session.async_payment_failed':
+            console.log("Pago fallido (pago asincrónico)");
+            break;
+        default:
+            console.log(`Evento no manejado: ${event.type}`);
+        }
         return res.status(200).json({ json: { event }, msg: "Verificación de pago exitosa" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: "Error al verificar el pago", error: error.message });
     }
+
 };
 
 export {
