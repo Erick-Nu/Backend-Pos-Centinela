@@ -10,11 +10,8 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 router.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/'}),
     (req, res) => {
-        res.json({
-        msg: 'Autenticado con Google',
-        jefe: req.user.envBoss,
-        token: req.user.tokenIngreso,
-        });
+        const redirectUrl = `${process.env.URL_FRONTEND}/register?token=${req.user.tokenIngreso}&user=${req.user.envBoss}`;
+        res.redirect(redirectUrl);
     }
 );
 

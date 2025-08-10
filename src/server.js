@@ -23,7 +23,7 @@ app.set('port',process.env.PORT || 3000)
 // Permite que cualquier dominio acceda al servidor
 app.use(cors())
 
-
+app.use(express.text({ limit: '50mb' })); 
 
 
 // Middlewares 
