@@ -222,7 +222,6 @@ const pagoPlan = async (req, res) => {
     const jefeBDD = await Boss.findById(id);
     if (!jefeBDD)
         return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
-    const { jefeId } = jefeBDD._id.toString();
     try {
         const { planId } = req.body;
         if (!planId) return res.status(400).json({ msg: "Plan ID es requerido" });
@@ -236,7 +235,7 @@ const pagoPlan = async (req, res) => {
                 }
             ],
             metadata: {
-                jefe: jefeId,
+                jefe: jefeBDD._id.toString(),
                 email: jefeBDD.email,
                 plan: planId
             },
