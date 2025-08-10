@@ -15,6 +15,7 @@ router.get('/auth/google/callback',
             jefe: req.user.envBoss,
             token: req.user.tokenIngreso,
         };
+        console.log("Datos del usuario autenticado:", data);
         const user = encodeURIComponent(JSON.stringify(data));
         const redirectUrl = `${process.env.URL_FRONTEND}/auth/google/callback?token=${req.user.tokenIngreso}&user=${user}`;
         console.log("Redirigiendo a:", redirectUrl);
