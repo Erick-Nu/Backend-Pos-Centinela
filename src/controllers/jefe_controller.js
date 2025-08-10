@@ -258,8 +258,13 @@ const verificarPago = async (req, res) => {
         switch(event.type) {
         case 'checkout.session.completed':
             const checkoutSessionCompleted = event.data.object;
-            console.log("Pago completado");
-            console.log(checkoutSessionCompleted);
+            const jefeBDD = await Boss.findById(checkoutSessionCompleted.metadata.jefe);
+            if (checkoutSessionCompleted.metadata.plan === "price_1RtuNODilpyfhijff7TgTsGp") {
+                jefeBDD.plan = "enterprise";
+            } else {
+                jefeBDD.plan = "business";
+            }
+            await jefeBDD.save();
             break;
         case 'checkout.session.async_payment_succeeded':
             console.log("Pago completado (pago asincrónico)");
