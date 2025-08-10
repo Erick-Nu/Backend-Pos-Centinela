@@ -23,6 +23,8 @@ app.set('port',process.env.PORT || 3000)
 // Permite que cualquier dominio acceda al servidor
 app.use(cors())
 
+app.use('/api/boss/plans/pago/verificar', express.raw({ type: 'application/json' }), routerJefes);
+
 
 // Middlewares 
 // Este middleware permite que el servidor pueda recibir datos en formato JSON
