@@ -155,13 +155,13 @@ const updatePerfil = async (req, res) => {
             return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
         const jefeBDDCedula = await Boss.findOne({ cedula });
         if (jefeBDDCedula)
-            return res.status(409).json({ msg: `Lo sentimos, la cédula ${cedula} ya se encuentra registrada` });
+            return res.status(409).json({ msg: `Lo sentimos, la cédula ya se encuentra registrada` });
         let emailActualizado = false;
 
         if (jefeBDD.email !== email && jefeBDD.emailGoogle === false) {
             const jefeBDDMail = await Boss.findOne({ email });
             if (jefeBDDMail)
-                return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
+                return res.status(409).json({ msg: `Lo sentimos, el email ya se encuentra registrado` });
             jefeBDD.email = email ?? jefeBDD.email;
             emailActualizado = true;
         }
