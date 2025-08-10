@@ -145,7 +145,7 @@ const perfilBoss = async (req, res) => {
 const updatePerfil = async (req, res) => {
     try {
         const { id } = req.jefeBDD;
-        const { nombres, apellidos, email } = req.body;
+        const { nombres, apellidos, email, cedula } = req.body;
         if (!mongoose.Types.ObjectId.isValid(id))
             return res.status(404).json({ msg: "Lo sentimos, debe ser un id" });
         if (Object.values(req.body).includes(""))
@@ -153,11 +153,17 @@ const updatePerfil = async (req, res) => {
         const jefeBDD = await Boss.findById(id);
         if (!jefeBDD)
             return res.status(404).json({ msg: `Lo sentimos, no existe el jefe` });
-        if (jefeBDD.email !== email) {
+
+        let emailActualizado = false;
+
+        if (jefeBDD.email !== email && jefeBDD.emailGoogle === false) {
             const jefeBDDMail = await Boss.findOne({ email });
             if (jefeBDDMail)
                 return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
+            jefeBDD.email = email ?? jefeBDD.email;
+            emailActualizado = true;
         }
+
         if (jefeBDD.authGoogle === true) {
             jefeBDD.authGoogle = false;
         }
@@ -169,11 +175,17 @@ const updatePerfil = async (req, res) => {
         }
         jefeBDD.nombres = nombres ?? jefeBDD.nombres;
         jefeBDD.apellidos = apellidos ?? jefeBDD.apellidos;
-        jefeBDD.email = email ?? jefeBDD.email;
+        jefeBDD.cedula = cedula ?? jefeBDD.cedula;
         await jefeBDD.save();
         const jefeActualizado = await Boss.findById(id).select("-password -createdAt -updatedAt -__v -isDeleted -token").populate("companyNames", "_id companyName companyCode");
+
+        let msg = "Datos actualizados correctamente";
+        if (jefeBDD.emailGoogle === true) {
+            msg = "Datos actualizados correctamente, excepto el email (no se puede modificar un email de Google)";
+        }
+
         res.status(200).json({
-            msg: "Datos actualizados correctamente",
+            msg,
             data: jefeActualizado
         });
     } catch (error) {
@@ -225,6 +237,10 @@ const pagoPlan = async (req, res) => {
     try {
         const { planId } = req.body;
         if (!planId) return res.status(400).json({ msg: "Plan ID es requerido" });
+        // Revisar esto
+        if(jefeBDD.plan === "business" && planId === "price_1RtuNODilpyfhijff7TgTsGp") {
+            // Lógica para el plan Business
+        }
         const session = await stripe.checkout.sessions.create({
             mode: 'subscription',
             payment_method_types: ['card'],

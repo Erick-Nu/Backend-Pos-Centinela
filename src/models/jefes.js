@@ -74,6 +74,10 @@ const jefeSchema = new Schema({
     authGoogle: {
         type: Boolean,
         default: false
+    },
+    emailGoogle: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

@@ -22,6 +22,7 @@ const authGoogle = async (accessToken, refreshToken, profile, done) => {
         confirmEmail: true,
         rol: 'jefe',
         authGoogle: true,
+        emailGoogle: true
       });
       await boss.save();
     }
