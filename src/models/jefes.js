@@ -70,6 +70,10 @@ const jefeSchema = new Schema({
         type: String,
         enum: ['starter', 'business', 'enterprise'],
         default: 'starter'
+    },
+    authGoogle: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

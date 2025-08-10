@@ -158,6 +158,9 @@ const updatePerfil = async (req, res) => {
             if (jefeBDDMail)
                 return res.status(409).json({ msg: `Lo sentimos, el email ${email} ya se encuentra registrado` });
         }
+        if (jefeBDD.authGoogle === true) {
+            jefeBDD.authGoogle = false;
+        }
         if(req.files?.foto){
             const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.foto.tempFilePath,{folder:'Jefes'});
             jefeBDD.foto = secure_url;

@@ -21,6 +21,7 @@ const authGoogle = async (accessToken, refreshToken, profile, done) => {
         password: await Boss.prototype.encrypPassword(rawPassword),
         confirmEmail: true,
         rol: 'jefe',
+        authGoogle: true,
       });
       await boss.save();
     }
