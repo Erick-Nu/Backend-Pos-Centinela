@@ -167,14 +167,14 @@ const updateNegocio = async (req, res) => {
 };
 
 const addEmployee = async (req, res) => {
-    const {emailEmpleado} = req.body;
+    const {emailEmpleado, companyCode} = req.body;
     const empleadoRegistrado = await Employees.findOne({email: emailEmpleado});
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todo los datos"});
     if (empleadoRegistrado) {
         return res.status(400).json({msg:"Lo sentimos, el empleado ya se encuentra registrado"});
     }
-    const negocioDBB = await Negocios.findOne({emailBoss: req.jefeBDD._id});
+    const negocioDBB = await Negocios.findOne({emailBoss: req.jefeBDD._id, companyCode});
     if (!negocioDBB)
         return res.status(404).json({msg:"Lo sentimos, el negocio no se encuentra registrado"});
     await sendMailToRegisterNegocio(emailEmpleado, negocioDBB.companyName, negocioDBB.companyCode, "Empleado");
