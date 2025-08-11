@@ -192,7 +192,7 @@ const listEmployees = async (req, res) => {
             .populate({
                 path: "empleados",
                 select: "_id nombres apellidos email foto status",
-                match: { isDeleted: false }
+                match: { isDeleted: true }
             });
         if (!negocioBDD) {
             return res.status(404).json({ msg: "Lo sentimos, no existe el negocio" });
