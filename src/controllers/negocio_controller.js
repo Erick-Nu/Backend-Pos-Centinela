@@ -191,7 +191,7 @@ const listEmployees = async (req, res) => {
             .select("-__v -createdAt -updatedAt -logoID -isDeleted")
             .populate({
                 path: "empleados",
-                select: "_id nombres apellidos email foto status",
+                select: "_id nombres apellidos email foto status isDeleted",
                 match: { isDeleted: false }
             });
         if (!negocioBDD) {
