@@ -10,7 +10,8 @@ const registerEmployee = async (req, res) => {
     const {email,password,companyCode, cedula} = req.body;
     if (Object.values(req.body).includes(""))
         return res.status(400).json({msg:"Lo sentimos, debes de llenar todos los campos"});
-    const verificarEmailBDD = await Employee.findOne({email});
+    // const verificarEmailBDD = await Employee.findOne({email});
+    const verificarEmailBDD = await Negocio.findOne({"companyCode":companyCode,"empleados.email": email})
     if (verificarEmailBDD)
         return res.status(400).json({msg:"Lo sentimos, el email ya se encuentra registrado"});
     const verificarCedulaBDD = await Employee.findOne({cedula});
