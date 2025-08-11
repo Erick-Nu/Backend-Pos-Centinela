@@ -2,14 +2,16 @@ import app from './server.js'
 import connection from './database.js';
 import http from 'http'
 import { Server } from 'socket.io'
+import dotenv from 'dotenv'
 
 
+dotenv.config();
 connection();
 
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173"
+        origin: process.env.URL_FRONTEND,
     }
 })
 
