@@ -45,7 +45,7 @@ const sendMailToRegisterNegocio = (userMail, companyName, companyCode, rol) => {
                 <p style="font-size: 16px; color: #4a5568;">Hola,</p>
 
                 <p style="font-size: 16px; color: #4a5568; text-align: justify;">
-                    Has sido registrado como empleado en <strong>${companyName}</strong>. Para comenzar, debes completar tu registro configurando tu contraseña.
+                    Has sido registrado como empleado en <strong>${companyName}</strong>. Para comenzar, debes completar tu registro configurando tus datos y contraseña.
                 </p>
 
                 <div style="text-align: center; margin-top: 20px;">
