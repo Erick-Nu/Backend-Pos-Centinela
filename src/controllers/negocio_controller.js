@@ -120,7 +120,12 @@ const detalleNegocio = async (req, res) => {
     if (!negocioId) {
         return res.status(400).json({ msg: "Lo sentimos, debes enviar el ID del negocio" });
     }
-    const negocioBDD = await Negocios.findById(negocioId).select("-__v -createdAt -updatedAt -logoID -isDeleted").populate("emailBoss", "nombres apellidos email foto").populate("empleados", "_id nombres apellidos email").populate("reportes", "_id fecha ventasCompletadas horasTrabajadas comentarios");
+    const negocioBDD = await Negocios.findById(negocioId).select("-__v -createdAt -updatedAt -logoID -isDeleted").populate("emailBoss", "nombres apellidos email foto")
+    .populate({
+        path: "empleados",
+        select: "_id nombres apellidos email foto status isDeleted",
+        match: { isDeleted: false }
+    }).populate("reportes", "_id fecha ventasCompletadas horasTrabajadas comentarios");
     if (!negocioBDD) {
         return res.status(404).json({ msg: "Lo sentimos, no existe el negocio" });
     }
@@ -155,7 +160,11 @@ const updateNegocio = async (req, res) => {
         negocioBDD.emailNegocio = emailNegocio ?? negocioBDD.emailNegocio;
         negocioBDD.descripcion = descripcion ?? negocioBDD.descripcion;
         await negocioBDD.save();
-        const negocioActualizado = await Negocios.findById(negocioId).select("-__v -createdAt -updatedAt -logoID -isDeleted").populate("emailBoss", "nombres apellidos email foto");
+        const negocioActualizado = await Negocios.findById(negocioId).select("-__v -createdAt -updatedAt -logoID -isDeleted").populate("emailBoss", "nombres apellidos email foto").populate({
+                path: "empleados",
+                select: "_id nombres apellidos email foto status isDeleted",
+                match: { isDeleted: false }
+            });
         res.status(200).json({
             msg: "Datos actualizados correctamente",
             data: negocioActualizado

@@ -61,12 +61,12 @@ const negocioSchema = new Schema({
     },
     logo: {
         type: String,
-        default: "https://res.cloudinary.com/dmccize09/image/upload/v1752099442/Administradores/gjypqxqip7qmud3at6wc.png",
+        default: "https://res.cloudinary.com/dmccize09/image/upload/v1754916409/Negocios/mjbw4tc3chfcibohxhub.png",
         trim: true
     },
     logoID: {
         type: String,
-        default: "Administradores/gjypqxqip7qmud3at6wc",
+        default: "Negocios/hnleyr2c9sair3uzrlt4",
         trim: true
     },
     reportes: [{
