@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
     console.log(`✅ Usuario conectado con ID: ${socket.id}`)
     socket.on('enviar-mensaje-front-back',(payload)=>{
         console.log(`📩 Mensaje recibido de ${socket.id}: ${payload}`);
-        socket.emit('enviar-mensaje-front-back',payload)
+        socket.broadcast.emit('enviar-mensaje-front-back',payload)
     })
     socket.on('disconnect', () => {
     console.log(`❌ Usuario desconectado: ${socket.id}`);
