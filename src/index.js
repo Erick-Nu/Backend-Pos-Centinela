@@ -22,11 +22,12 @@ io.on('connection', (socket) => {
         console.log(`📩 Mensaje recibido de ${socket.id}: ${payload}`);
         socket.emit('enviar-mensaje-front-back',payload)
     })
+    socket.on('disconnect', () => {
+    console.log(`❌ Usuario desconectado: ${socket.id}`);
+    })
 })
 
-socket.on('disconnect', () => {
-    console.log(`❌ Usuario desconectado: ${socket.id}`);
-});
+
 
 
 
