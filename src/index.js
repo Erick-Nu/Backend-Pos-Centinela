@@ -28,10 +28,7 @@ io.on('connection', (socket) => {
 })
 
 
-
-
-
-server.listen(app.get('port'),()=>{
-    console.log(`Server ok on http://localhost:${app.get('port')}`);
-})
+server.listen(app.get('port'), () => {
+    console.log(`🚀 Server corriendo en puerto ${app.get('port')}`);
+});
 
