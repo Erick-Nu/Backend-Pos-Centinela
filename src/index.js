@@ -4,9 +4,9 @@ import http from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 
-
 dotenv.config();
 connection();
+
 
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -18,7 +18,7 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
     console.log('Usuario conectado',socket.id)
     socket.on('enviar-mensaje-front-back',(payload)=>{
-        socket.broadcast.emit('enviar-mensaje-front-back',payload)
+        socket.emit('enviar-mensaje-front-back',payload)
     })
 })
 
